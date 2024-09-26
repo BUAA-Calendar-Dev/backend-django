@@ -21,7 +21,7 @@ python manage.py runserver
 
 # 项目结构
 
-![structure](https://pigkiller-011955-1319328397.cos.ap-beijing.myqcloud.com/img/202409150038298.png)
+![structure](./docs/structure.drawio.png)
 
 ## 实体
 
@@ -32,6 +32,10 @@ python manage.py runserver
 - 标签Tag
 - 消息Message
 - 活动Activity
+
+## API 规范
+
+见：https://apifox.com/apidoc/shared-f18b70f2-bf84-4766-aa28-9a466ddd0c11
 
 ## 接口
 
