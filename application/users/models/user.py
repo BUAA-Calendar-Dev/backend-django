@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-from application.tag.models import Tag
 from application.users.models.user_value import *
 
 
@@ -9,10 +8,14 @@ class User(AbstractUser):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
     password = models.CharField(max_length=256, verbose_name="密码")
 
-    gender = models.CharField(choices=GENDER_CHOICE, max_length=32, default="保密", verbose_name="性别")
-    identity = models.CharField(choices=IDENTITY_CHOICE, max_length=32, default="学生", verbose_name="身份")
+    name = models.CharField(max_length=32, default="保密", verbose_name="name")
+    avatar = models.ImageField(upload_to='avatar/', default='avatar/default.png', verbose_name='avatar')
+    email = models.EmailField(unique=True, verbose_name='email',
+                              error_messages={'unique': '该邮箱已被注册'}, blank=False)
+    motto = models.CharField(max_length=256, default='这个人很懒，什么都没有留下', verbose_name='个性签名')
+    gender = models.CharField(choices=GENDER_CHOICE, max_length=32, default="保密", verbose_name="gender")
 
-    tags = models.ManyToManyField(Tag, verbose_name="own_tags", related_name="tasks_owners")
+    identity = models.CharField(choices=IDENTITY_CHOICE, max_length=32, default="学生", verbose_name="identity")
 
     groups = models.ManyToManyField(
         'auth.Group',
@@ -26,6 +29,8 @@ class User(AbstractUser):
         related_query_name='custom_user',
         blank=True,
     )
+
+    isDelete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.username
