@@ -19,6 +19,16 @@ cd Calendar
 python manage.py runserver
 ```
 
+## 管理员账户
+
+账号：root
+
+邮箱：db@buaa.edu.cn
+
+密码：123456
+
+访问管理网站：http://127.0.0.1:8000/admin/
+
 # 项目结构
 
 ![structure](./docs/structure.drawio.png)
