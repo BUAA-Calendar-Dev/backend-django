@@ -51,7 +51,7 @@ def creat_task(request: HttpRequest):
 def update_task(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    task = Task.objects.get(id)
+    task = Task.objects.get(id=id)
     if task is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "任务不存在")
 
@@ -102,7 +102,7 @@ def update_task(request: HttpRequest, id: int):
 def add_related_user(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    task = Task.objects.get(id)
+    task = Task.objects.get(id=id)
 
     if task is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "任务不存在")
@@ -126,7 +126,7 @@ def add_related_user(request: HttpRequest, id: int):
 def add_related_users(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    task = Task.objects.get(id)
+    task = Task.objects.get(id=id)
 
     if task is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "任务不存在")
@@ -151,7 +151,7 @@ def add_related_users(request: HttpRequest, id: int):
 def add_tag(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    task = Task.objects.get(id)
+    task = Task.objects.get(id=id)
 
     if task is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "任务不存在")
@@ -174,7 +174,7 @@ def add_tag(request: HttpRequest, id: int):
 def add_tags(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    task = Task.objects.get(id)
+    task = Task.objects.get(id=id)
 
     if task is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "任务不存在")
