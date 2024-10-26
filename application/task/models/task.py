@@ -7,7 +7,7 @@ from application.users.models import User
 class Task(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
 
-    title = models.CharField(max_length=256, default="活动", verbose_name="name")
+    title = models.CharField(max_length=256, default="活动", verbose_name="title")
     content = models.CharField(max_length=1024, default="任务描述", verbose_name="content")
 
     start_time = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name="start_time")

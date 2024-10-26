@@ -33,7 +33,7 @@ class User(AbstractUser):
     isDelete = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.username
+        return self.name
 
     class Meta:
         ordering = ['-date_joined']

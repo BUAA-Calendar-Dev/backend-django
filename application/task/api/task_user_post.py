@@ -63,15 +63,17 @@ def update_task(request: HttpRequest, id: int):
     content = post_data.get('content')
     end_time = post_data.get('end_time')
 
-    if title and len(title) < 256:
-        task.title = title
-    else:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "标题过长")
+    if title:
+        if len(title) < 256:
+            task.title = title
+        else:
+            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "标题过长")
 
-    if content and len(content) < 1024:
-        task.content = content
-    else:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "内容过长")
+    if content:
+        if len(content) < 1024:
+            task.content = content
+        else:
+            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "内容过长")
 
     # 认为传入的是XXXX-YY-ZZ的形式
     if end_time:

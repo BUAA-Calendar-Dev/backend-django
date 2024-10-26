@@ -10,7 +10,7 @@
 
 ```shell
 # 安装相关依赖
-conda create --name buaa_calendar python=3.10
+conda create --title buaa_calendar python=3.10
 pip install -r requirements.txt
 
 # 进入项目目录

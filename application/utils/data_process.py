@@ -37,16 +37,16 @@ def model_to_dict(instance, fields=None, exclude=None):
     opts = instance._meta
     data = {}
     for f in chain(opts.concrete_fields, opts.private_fields, opts.many_to_many):
-        if fields is not None and f.name not in fields:
+        if fields is not None and f.title not in fields:
             continue
-        if exclude and f.name in exclude:
+        if exclude and f.title in exclude:
             continue
         if isinstance(f, models.ImageField) or isinstance(f, models.FileField):
             data[f.name] = f.value_from_object(instance).url
         elif isinstance(f, models.ManyToManyField):
             data[f.name] = [i.pk for i in f.value_from_object(instance)]
         else:
-            data[f.name] = f.value_from_object(instance)
+            data[f.title] = f.value_from_object(instance)
     return data
 
 

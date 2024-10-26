@@ -101,7 +101,7 @@ def success_api_response(data) -> dict:
 def fail_response(code, error_msg=None) -> dict:
     """
     wrap an failed response dict obj
-    :param code: error code, refers to ErrorCode, can be an integer or a str (error name)
+    :param code: error code, refers to ErrorCode, can be an integer or a str (error title)
     :param error_msg: external error information
     :return: an api response dictionary
     """
