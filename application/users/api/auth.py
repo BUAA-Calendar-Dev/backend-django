@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 import jwt
+from django.http import HttpRequest
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
 
@@ -62,7 +63,7 @@ def byte2str(b):
     return b.decode('utf-8')
 
 
-def get_user(request) -> User:
+def get_user(request: HttpRequest) -> User:
     header = request.META.get('HTTP_AUTHORIZATION')
     try:
         if header is None:
@@ -144,11 +145,11 @@ def jwt_auth(allow_anonymous=False):
                 if allow_anonymous:
                     user = None
                 else:
+                    print("未登录")
                     return fail_response(ErrorCode.UNAUTHORIZED_ERROR, '未登录')
             request.user = user
             return api(request, *args, **kwargs)
+
         return wrapper
+
     return decorator
-
-
-

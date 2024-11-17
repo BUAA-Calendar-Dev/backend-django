@@ -13,8 +13,6 @@ from application.utils.data_process import parse_data
 from application.utils.response import *
 
 name_not_allow = ['default', 'delete']
-MAGIC_ID = 114514
-login_id = MAGIC_ID
 
 
 @response_wrapper
@@ -59,22 +57,15 @@ def _get_user_info(id: int):
         "motto": user.motto,
         "gender": user.gender,
         "identity": user.identity,
-        # TODO：肯定不能这样
-        "password": 114514
     }
 
 
 @response_wrapper
 @require_POST
 def user_login(request: HttpRequest):
-    print("this is login")
     post_data = parse_data(request)
     username = post_data.get('username')
     password = post_data.get('password')
-
-    print(post_data)
-    print(f"username: {username}|")
-    print(f"password: {password}|")
 
     # TODO：对于具体身份的区分
     authen = post_data.get('authen')
@@ -91,7 +82,6 @@ def user_login(request: HttpRequest):
         username = tmp_user.username
         user = authenticate(username=username, password=password)
 
-    print("test user ", user.id)
     if user is not None:
         login(request, user)
 
@@ -102,12 +92,13 @@ def user_login(request: HttpRequest):
         # TODO：进行真正的多用户登录
         global login_id
         login_id = user.id
-        print(f"[login]\tuser_id is {login_id}")
 
-        print("login success")
         return success_response({
             "message": "登录成功",
             "username": user.username,
+            "user_id": user.id,
+            "token": generate_token(user),
+
         })
     elif User.objects.filter(username=username).exists():
         # 密码错误
@@ -125,34 +116,8 @@ def user_logout(request):
     request.session.pop('user_id', None)
     logout(request)
 
-    global login_id
-    login_id = MAGIC_ID
     return success_response({
         "message": "退出成功"
-    })
-
-
-@response_wrapper
-@require_GET
-def check_login_status(request: HttpRequest):
-    global login_id
-
-    if login_id != MAGIC_ID:
-        return success_response({
-            "message": "已登录"
-        })
-    else:
-        return fail_response(ErrorCode.UNAUTHORIZED_ERROR, "还没有登录")
-
-
-@response_wrapper
-@require_POST
-def get_user_id(request):
-    global login_id
-    user = User.objects.filter(id=login_id).first()
-    return success_response({
-        "user_id": login_id,
-        "username": user.username,
     })
 
 
@@ -160,7 +125,7 @@ def get_user_id(request):
 @response_wrapper
 @require_POST
 def user_register(request: HttpRequest):
-    if request.session.get('is_login', None) or login_id != MAGIC_ID:
+    if request.session.get('is_login', None):
         return success_response({
             "message": "已经登录"
         })
@@ -207,8 +172,7 @@ def user_register(request: HttpRequest):
 @response_wrapper
 @require_POST
 def change_password(request: HttpRequest):
-    id = login_id
-    user = User.objects.filter(id=id).first()
+    user = request.user
 
     post_data = parse_data(request)
     old_password = post_data.get('old_password')

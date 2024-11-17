@@ -13,6 +13,7 @@ urlpatterns = [
         path("message/", include('application.message.urls')),
         path("tag/", include('application.tag.urls')),
         path("task/", include('application.task.urls')),
+        path("event/", include('application.task.urls')),
         path("user/", include('application.users.urls')),
     ])),
 ]
