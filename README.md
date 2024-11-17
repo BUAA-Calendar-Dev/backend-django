@@ -1,3 +1,10 @@
+# 接口对接
+
+1. 对于activity的改变参与活动状态的接口，对于id的界定需要修改
+   1. 是用户的id还是activity的id
+   2. 目前：这个API是不是有问题，无法标记到activity，在后端id改为了activity的id，默认当前user进退
+2. 
+
 # 项目简介
 
 ## 后端介绍
@@ -10,7 +17,7 @@
 
 ```shell
 # 安装相关依赖
-conda create --title buaa_calendar python=3.10
+conda create --name buaa_calendar python=3.10
 pip install -r requirements.txt
 
 # 进入项目目录

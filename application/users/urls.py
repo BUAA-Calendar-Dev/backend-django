@@ -1,11 +1,7 @@
-from django.db import models
+from django.urls import path
 
+from .api import *
 
-class Tag:
-    id = models.AutoField(primary_key=True, auto_created=True, editable=False)
+urlpatterns = [
 
-    def __str__(self):
-        return str(self.id)
-
-    class Meta:
-        db_table = 'tag'
+]
