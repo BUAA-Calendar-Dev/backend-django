@@ -15,7 +15,7 @@
 后端支持的一些冗余设计：
 
 1. event支持父event
-2. 
+2. …还是挺多的，可以讨论一下（）
 
 # 项目简介
 
@@ -81,7 +81,7 @@ python manage.py runserver
 
 - 查询：
 
-  ```py
+  ```
   { <class-id>: { <task-id>: {"": ""}}}
   ```
 
@@ -97,7 +97,7 @@ python manage.py runserver
 
 - 接受消息：
 
-  ```python
+  ```
   {
       <message-id>: {
           "titile": <str>,

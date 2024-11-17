@@ -6,12 +6,14 @@ from Calendar import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("activity/", include('application.activity.urls')),
-    path("class/", include('application.classes.urls')),
-    path("message/", include('application.message.urls')),
-    path("tag/", include('application.tag.urls')),
-    path("task/", include('application.task.urls')),
-    path("user/", include('application.users.urls')),
+    re_path(r'^api/', include([
+        path("activity/", include('application.activity.urls')),
+        path("class/", include('application.classes.urls')),
+        path("message/", include('application.message.urls')),
+        path("tag/", include('application.tag.urls')),
+        path("task/", include('application.task.urls')),
+        path("user/", include('application.users.urls')),
+    ])),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
