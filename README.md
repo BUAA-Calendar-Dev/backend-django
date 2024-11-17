@@ -9,7 +9,8 @@
 5. axios.delete处理起来有些麻烦，能不能换成post方法
    1. `*return* axios.delete(process.env.VUE_APP_ROOT_URL + /api/tag/${id});`这个路径处理一下，不要原始路径
 6. tag里面很多是地址相同，通过不同的axios方法来区分具体的请求，修改为不同的地址，不然django路由无法区分
-7. 
+7. event和task感觉不是很明白，需要对接一下
+8. getUser直接明文传输密码了
 
 后端支持的一些冗余设计：
 

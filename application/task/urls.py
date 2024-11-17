@@ -4,5 +4,6 @@ from .api import *
 
 urlpatterns = [
     path('', get_tasks_related),
-    path('create', creat_task)
+    # TODO：对event进行对接
+    path('create', creat_task),
 ]

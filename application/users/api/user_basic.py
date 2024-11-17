@@ -20,14 +20,31 @@ login_id = MAGIC_ID
 @response_wrapper
 @jwt_auth()
 @require_GET
+def get_now_user_info(request: HttpRequest):
+    post_data = parse_data(request)
+    user = request.user
+
+    info = _get_user_info(user.id)
+    if user is None:
+        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
+    return success_response({
+        "users": _get_user_info(user.id)
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_GET
 def get_user_info(request: HttpRequest, id: int):
     post_data = parse_data(request)
     user = User.objects.get(id=id)
 
     info = _get_user_info(id)
-    if info is None:
+    if user is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
-    return success_response(info)
+    return success_response({
+        "users": _get_user_info(id)
+    })
 
 
 def _get_user_info(id: int):
@@ -36,12 +53,14 @@ def _get_user_info(id: int):
     if user is None:
         return None
     return {
-        "name": user.name,
+        "username": user.name,
         "avatar": default_storage.url(user.avatar),
         "email": user.email,
         "motto": user.motto,
         "gender": user.gender,
-        "identity": user.identity
+        "identity": user.identity,
+        # TODO：肯定不能这样
+        "password": 114514
     }
 
 

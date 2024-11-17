@@ -27,18 +27,11 @@ def get_tasks_related(request: HttpRequest):
     tasks_list = []
     specialHours = []
     for task in tasks_related:
-        specialHours.append({
-            "from": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            "to": task.end_time.strftime('%Y-%m-%d %H:%M:%S'),
-            "class": task.title,
-            "label": task.content
-        })
-
         tasks_list.append({
-            "id": task.id,
+            "task-id": task.id,
             "title": task.title,
-            "content": task.content,
-            "start": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "task-content": task.content,
+            "task-time": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
             "end": task.end_time.strftime('%Y-%m-%d %H:%M:%S')
         })
     return success_response({

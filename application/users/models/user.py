@@ -12,6 +12,8 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='avatar/', default='avatar/default.png', verbose_name='avatar')
     email = models.EmailField(unique=True, verbose_name='email',
                               error_messages={'unique': '该邮箱已被注册'}, blank=False)
+    phone = models.CharField(max_length=32, default="未定义", verbose_name="phone")
+
     motto = models.CharField(max_length=256, default='这个人很懒，什么都没有留下', verbose_name='motto')
     gender = models.CharField(choices=GENDER_CHOICE, max_length=32, default="保密", verbose_name="gender")
 
