@@ -89,7 +89,7 @@ def _api_response(success, data) -> dict:
     return {'success': success, 'data': data}
 
 
-def success_api_response(data) -> dict:
+def success_response(data) -> dict:
     """
     wrap a success response dict obj
     :param data: requested data

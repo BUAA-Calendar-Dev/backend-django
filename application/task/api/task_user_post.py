@@ -40,7 +40,7 @@ def creat_task(request: HttpRequest):
         task.parent_task = Task.objects.get(parent_task_id)
 
     user.save()
-    return success_api_response({
+    return success_response({
         "message": "成功创建任务"
     })
 
@@ -91,7 +91,7 @@ def update_task(request: HttpRequest, id: int):
                                  "结束时间必须在开始时间之后")
     task.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功修改任务"
     })
 
@@ -115,7 +115,7 @@ def add_related_user(request: HttpRequest, id: int):
     task.related_users.add(user)
     task.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功添加相关用户"
     })
 
@@ -140,7 +140,7 @@ def add_related_users(request: HttpRequest, id: int):
         task.related_users.add(user)
     task.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功添加所有相关用户"
     })
 
@@ -163,7 +163,7 @@ def add_tag(request: HttpRequest, id: int):
     task.tags.add(tag)
     task.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功为当前task添加tag"
     })
 
@@ -187,6 +187,6 @@ def add_tags(request: HttpRequest, id: int):
         task.tags.add(tag)
     task.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功为当前task添加所有tag"
     })

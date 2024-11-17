@@ -24,7 +24,7 @@ def get_tags(request: HttpRequest):
             "title": tags.title,
             "content": tags.content,
         })
-    return success_api_response({
+    return success_response({
         "tags": tags,
         "tags_num": len(tags)
     })

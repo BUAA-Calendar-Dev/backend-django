@@ -33,6 +33,6 @@ def user_inout_activity(request: HttpRequest, id: int, status: str):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "无效的状态")
 
     activity.save()
-    return success_api_response({
+    return success_response({
         "message": f"成功改变用户的{status}"
     })

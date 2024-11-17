@@ -23,7 +23,7 @@ def get_class_info(request: HttpRequest, id: int):
     if class_ is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
 
-    return success_api_response({
+    return success_response({
         "title": class_.title,
         "introduction": class_.introduction
     })
@@ -43,7 +43,7 @@ def get_students(request: HttpRequest, id: int):
     student_info_list = []
     for student in students:
         student_info_list.append(_get_user_info(student.id))
-    return success_api_response({
+    return success_response({
         "students": student_info_list,
         "students_num": len(student_info_list)
     })
@@ -63,7 +63,7 @@ def get_teachers(request: HttpRequest, id: int):
     teacher_info_list = []
     for student in teachers:
         teacher_info_list.append(_get_user_info(student.id))
-    return success_api_response({
+    return success_response({
         "teachers": teacher_info_list,
         "teachers_num": len(teacher_info_list)
     })

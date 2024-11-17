@@ -27,7 +27,7 @@ def creat_tag(request: HttpRequest):
     tag = Tag(title=title, content=content, create_user=user)
     tag.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功创建tag"
     })
 
@@ -57,6 +57,6 @@ def update_tag(request: HttpRequest, id: int):
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "描述过长")
 
     task.save()
-    return success_api_response({
+    return success_response({
         "message": "成功修改tag"
     })

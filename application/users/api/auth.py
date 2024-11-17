@@ -51,7 +51,7 @@ def refresh_token(request):
         # 生成新的token
         token = generate_token(user)
 
-        return success_api_response({'token': token})
+        return success_response({'token': token})
     except jwt.InvalidTokenError:
         return fail_response(ErrorCode.INVALID_TOKEN_ERROR, '登录过期, token无效')
 

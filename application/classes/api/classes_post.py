@@ -30,7 +30,7 @@ def create_class(request: HttpRequest):
     class_ = Class(title=title, introduction=introduction)
     class_.save()
 
-    return success_api_response({
+    return success_response({
         "message": "成功创建班级"
     })
 
@@ -61,7 +61,7 @@ def update_class(request: HttpRequest, id: int):
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "班级描述过长")
 
     class_.save()
-    return success_api_response({
+    return success_response({
         "message": "信息"
     })
 
@@ -83,7 +83,7 @@ def add_student(request: HttpRequest, id: int):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, f"不存在{id}的学生")
     class_.students.add(student)
     class_.save()
-    return success_api_response({
+    return success_response({
         "message": "成功添加学生"
     })
 
@@ -107,7 +107,7 @@ def add_students(request: HttpRequest, id: int):
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, f"不存在{id}的学生")
         class_.students.add(student)
     class_.save()
-    return success_api_response({
+    return success_response({
         "message": "成功添加学生"
     })
 
@@ -129,7 +129,7 @@ def add_teacher(request: HttpRequest, id: int):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, f"不存在{id}的老师")
     class_.teachers.add(teacher)
     class_.save()
-    return success_api_response({
+    return success_response({
         "message": "成功添加学生"
     })
 
@@ -153,6 +153,6 @@ def add_teachers(request: HttpRequest, id: int):
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, f"不存在{id}的老师")
         class_.teachers.add(teacher)
     class_.save()
-    return success_api_response({
+    return success_response({
         "message": "成功添加学生"
     })

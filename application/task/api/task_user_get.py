@@ -33,7 +33,7 @@ def get_tasks_related(request: HttpRequest):
             "start_time": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
             "end_time": task.end_time.strftime('%Y-%m-%d %H:%M:%S')
         })
-    return success_api_response({
+    return success_response({
         "tasks": sort_by_time(tasks_list),
         "tasks_num": len(tasks_list)
     })
