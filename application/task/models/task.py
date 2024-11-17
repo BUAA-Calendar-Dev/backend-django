@@ -10,7 +10,7 @@ class Task(models.Model):
     title = models.CharField(max_length=256, default="活动", verbose_name="title")
     content = models.CharField(max_length=1024, default="任务描述", verbose_name="content")
 
-    start_time = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name="start_time")
+    start_time = models.DateTimeField(blank=False, null=False, verbose_name="start_time")
     end_time = models.DateTimeField(blank=True, null=True, verbose_name="end_time")
 
     create_user = models.ForeignKey(User,

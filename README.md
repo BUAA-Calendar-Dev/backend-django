@@ -3,6 +3,13 @@
 1. 对于activity的改变参与活动状态的接口，对于id的界定需要修改
    1. 是用户的id还是activity的id
    2. 目前：这个API是不是有问题，无法标记到activity，在后端id改为了activity的id，默认当前user进退
+2. getClassList这个api最好加一下后缀，不然后续加api比较麻烦
+3. enent中的specialHours的定义不是很清楚，要对接一下
+4. 
+
+后端支持的一些冗余设计：
+
+1. event支持父event
 2. 
 
 # 项目简介

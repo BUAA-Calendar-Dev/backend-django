@@ -13,20 +13,30 @@ from application.utils.data_process import parse_data
 from application.utils.response import *
 
 
+def _get_user_name_list(teacher_list: list[User]):
+    return [user.name for user in teacher_list]
+
+
+def _get_class_info(_class: Class):
+    return {
+        "id": _class.id,
+        "name": _class.title,
+        "count": len(list(_class.students.all())),
+        "teacher": _get_user_name_list(list(_class.teachers.all()))
+    }
+
+
 @response_wrapper
 @jwt_auth()
 @require_GET
 def get_class_info(request: HttpRequest, id: int):
     user = request.user
     post_data = parse_data(request)
-    class_ = Class.objects.get(id=id)
-    if class_ is None:
+    _class = Class.objects.get(id=id)
+    if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
 
-    return success_response({
-        "title": class_.title,
-        "introduction": class_.introduction
-    })
+    return success_response(_get_class_info(_class))
 
 
 @response_wrapper
@@ -66,4 +76,20 @@ def get_teachers(request: HttpRequest, id: int):
     return success_response({
         "teachers": teacher_info_list,
         "teachers_num": len(teacher_info_list)
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_GET
+def get_class_list(request: HttpRequest, id: int):
+    user = request.user
+    post_data = parse_data(request)
+    classes = list(Class.objects.all())
+
+    info_list = []
+    for _class in classes:
+        info_list.append(_get_class_info(_class))
+    return success_response({
+        "class": info_list
     })

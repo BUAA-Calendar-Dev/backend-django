@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.http import HttpRequest
+from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
 from application.tag.models import Tag
@@ -25,18 +26,18 @@ def creat_task(request: HttpRequest):
     if len(content) > 1024:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "内容过长")
 
-    end_time = post_data.get('end_time', None)
+    start_time = post_data.get('start', None)
+    end_time = post_data.get('end', None)
+    start_time = timezone.now() if start_time is None else start_time
+    end_time = start_time if end_time is None else end_time
+
     parent_task_id = post_data.get('parent_task_id', None)
 
-    task = Task(title=title, content=content, create_user=user)
+    task = Task(title=title, content=content, create_user=user, start_time=start_time, end_time=end_time)
     task.related_users.add(user)
     # TODO：目前设置如果没有DDL，则结束和创建时间相等
-    if end_time:
-        task.end_time = end_time
-    else:
-        task.end_time = task.start_time
 
-    if parent_task_id:
+    if parent_task_id is not None:
         task.parent_task = Task.objects.get(parent_task_id)
 
     user.save()

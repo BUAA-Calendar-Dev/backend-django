@@ -89,12 +89,14 @@ def _api_response(success, data) -> dict:
     return {'success': success, 'data': data}
 
 
-def success_response(data) -> dict:
+def success_response(data: dict) -> dict:
     """
     wrap a success response dict obj
     :param data: requested data
     :return: an api response dictionary
     """
+    if "code" not in data:
+        data["code"] = 0
     return _api_response(True, data)
 
 
