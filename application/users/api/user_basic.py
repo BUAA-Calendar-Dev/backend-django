@@ -67,11 +67,18 @@ def _get_user_info(id: int):
 @response_wrapper
 @require_POST
 def user_login(request: HttpRequest):
+    print("this is login")
     post_data = parse_data(request)
     username = post_data.get('username')
     password = post_data.get('password')
+
+    print(post_data)
+    print(f"username: {username}|")
+    print(f"password: {password}|")
+
     # TODO：对于具体身份的区分
     authen = post_data.get('authen')
+
     # 使用Django的authenticate函数验证用户名和密码
     user = authenticate(username=username, password=password)
 
@@ -84,6 +91,7 @@ def user_login(request: HttpRequest):
         username = tmp_user.username
         user = authenticate(username=username, password=password)
 
+    print("test user ", user.id)
     if user is not None:
         login(request, user)
 
@@ -96,6 +104,7 @@ def user_login(request: HttpRequest):
         login_id = user.id
         print(f"[login]\tuser_id is {login_id}")
 
+        print("login success")
         return success_response({
             "message": "登录成功",
             "username": user.username,

@@ -27,7 +27,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",  # 注册 corsheaders
     "Calendar",
     "application.activity",
     "application.classes",
@@ -35,20 +34,23 @@ INSTALLED_APPS = [
     "application.tag",
     "application.task",
     "application.users",
+    "corsheaders",  # 注册 corsheaders
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # 添加 CorsMiddleware
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",  # 添加 CorsMiddleware
 ]
 
 ROOT_URLCONF = "Calendar.urls"
+
+AUTH_USER_MODEL = 'users.User'
 
 TEMPLATES = [
     {
@@ -156,6 +158,7 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'  # 引擎
 SESSION_COOKIE_NAME = "sessionid"  # Session的cookie保存在浏览器上时的key
 SESSION_COOKIE_PATH = "/"  # Session的cookie保存的路径(默认)
 SESSION_COOKIE_DOMAIN = None  # Session的cookie保存的域名(默认)
+SESSION_COOKIE_SECURE = False  # 是否Https传输cookie
 SESSION_COOKIE_HTTPONLY = True  # 是否Session的cookie只支持http传输(默认)
 SESSION_COOKIE_AGE = 1209600  # Session的cookie失效日期(2周)(默认)
 SESSION_SAVE_EVERY_REQUEST = False  # 是否设置关闭浏览器使得Session过期

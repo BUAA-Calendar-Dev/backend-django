@@ -7,6 +7,7 @@ from Calendar import settings
 urlpatterns = [
     path("admin/", admin.site.urls),
     re_path(r'^api/', include([
+        path("token/", include('application.csrf.csrf_token')),
         path("activity/", include('application.activity.urls')),
         path("class/", include('application.classes.urls')),
         path("message/", include('application.message.urls')),
