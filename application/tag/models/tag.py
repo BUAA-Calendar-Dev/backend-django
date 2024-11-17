@@ -9,6 +9,9 @@ class Tag(models.Model):
     title = models.CharField(max_length=256, default="tag名", verbose_name="title")
     content = models.CharField(max_length=1024, default="暂无tag描述", verbose_name="content")
 
+    color = models.CharField(max_length=64, default="#FFEFDB", verbose_name="color")
+    fixed = models.BooleanField(verbose_name="fixed", default=False)
+
     create_user = models.ForeignKey(User,
                                     verbose_name="create_user",
                                     related_name="tag_create",

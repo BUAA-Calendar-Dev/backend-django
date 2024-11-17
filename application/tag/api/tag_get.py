@@ -18,11 +18,12 @@ def get_tags(request: HttpRequest):
     tags_related = Tag.objects.filter(create_user=user)
 
     tags = []
-    for tags in tags_related:
+    for tag in tags_related:
         tags.append({
-            "id": tags.id,
-            "title": tags.title,
-            "content": tags.content,
+            "id": tag.id,
+            "title": tag.title,
+            "content": tag.content,
+            "color": tag.color
         })
     return success_response({
         "tags": tags,

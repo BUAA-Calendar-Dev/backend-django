@@ -3,6 +3,19 @@ from enum import unique, Enum
 
 from django.http import JsonResponse
 
+from django.http import HttpResponseNotAllowed
+from functools import wraps
+
+
+def require_DELETE(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        if request.method != 'DELETE':
+            return HttpResponseNotAllowed(['DELETE'])
+        return view_func(request, *args, **kwargs)
+
+    return _wrapped_view
+
 
 @unique
 class StatusCode(Enum):
