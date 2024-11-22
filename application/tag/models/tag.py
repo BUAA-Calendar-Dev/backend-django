@@ -12,12 +12,6 @@ class Tag(models.Model):
     color = models.CharField(max_length=64, default="#FFEFDB", verbose_name="color")
     fixed = models.BooleanField(verbose_name="fixed", default=False)
 
-    create_user = models.ForeignKey(User,
-                                    verbose_name="create_user",
-                                    related_name="tag_create",
-                                    on_delete=models.CASCADE,
-                                    blank=True, null=True)
-
     def __str__(self):
         return f"@tag-{self.title}"
 

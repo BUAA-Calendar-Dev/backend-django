@@ -39,7 +39,9 @@ def get_activities_all(request: HttpRequest):
             "tags": [],  # TODO：对tags列表的处理
             "signed-in": _check_user_in_activity(user, activity)
         })
-    return success_response(info)
+    return success_response({
+        "activities": info
+    })
 
 
 @response_wrapper
@@ -50,4 +52,3 @@ def get_activity_detail(request: HttpRequest, id: int):
     return success_response({
         "content": _get_activity_detail(activity)
     })
-

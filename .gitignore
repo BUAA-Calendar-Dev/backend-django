@@ -9,3 +9,5 @@ out
 gen
 .gitignore
 __pycache__
+
+setting.json
