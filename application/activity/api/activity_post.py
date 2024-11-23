@@ -12,7 +12,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def user_inout_activity(request: HttpRequest, id: int, status: str):
     user = request.user

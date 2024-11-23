@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
 from application.tag.models import Tag
-from application.task.models import Task
+from application.task.models import Task, TaskUserRelationship
 from application.users.api.auth import jwt_auth
 from application.users.models import User
 from application.utils.data_process import parse_data
@@ -12,9 +12,10 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def creat_task(request: HttpRequest):
+    # 创建一个task，同时注册相关关系
     user = request.user
     post_data = parse_data(request)
 
@@ -33,21 +34,31 @@ def creat_task(request: HttpRequest):
 
     parent_task_id = post_data.get('parent_task_id', None)
 
-    task = Task(title=title, content=content, create_user=user, start_time=start_time, end_time=end_time)
-    task.related_users.add(user)
+    task = Task(title=title,
+                content=content,
+                start_time=start_time,
+                end_time=end_time)
     # TODO：目前设置如果没有DDL，则结束和创建时间相等
-
     if parent_task_id is not None:
         task.parent_task = Task.objects.get(parent_task_id)
+    task.save()
 
-    user.save()
+    relationship = TaskUserRelationship(
+        task=task,
+        name=task.title,
+        percentage=0,
+        permission=0,
+        related_user=user
+    )
+    relationship.save()
+
     return success_response({
         "message": "成功创建任务"
     })
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def update_task(request: HttpRequest, id: int):
     user = request.user
@@ -98,7 +109,7 @@ def update_task(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_related_user(request: HttpRequest, id: int):
     user = request.user
@@ -122,7 +133,7 @@ def add_related_user(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_related_users(request: HttpRequest, id: int):
     user = request.user
@@ -147,7 +158,7 @@ def add_related_users(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_tag(request: HttpRequest, id: int):
     user = request.user
@@ -170,7 +181,7 @@ def add_tag(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_tags(request: HttpRequest, id: int):
     user = request.user

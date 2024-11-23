@@ -12,7 +12,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def read_message(request: HttpRequest, id: int):
     user = request.user

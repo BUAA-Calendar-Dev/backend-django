@@ -1,11 +1,13 @@
 from datetime import datetime
 
+from django.contrib.auth.context_processors import auth
 from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 from django.core.files.storage import default_storage
 
 from django.contrib.auth import authenticate, login, logout
+
 from application.users.api.auth import jwt_auth, generate_token, generate_refresh_token
 from application.users.api.email import varify_captcha
 from application.users.models import User
@@ -16,7 +18,7 @@ name_not_allow = ['default', 'delete']
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_now_user_info(request: HttpRequest):
     post_data = parse_data(request)
@@ -31,7 +33,7 @@ def get_now_user_info(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_user_info(request: HttpRequest, id: int):
     post_data = parse_data(request)
@@ -51,8 +53,8 @@ def _get_user_info(id: int):
     if user is None:
         return None
     return {
-        "username": user.name,
-        "avatar": default_storage.url(user.avatar),
+        "username": user.username,
+        # "avatar": default_storage.url(user.avatar),
         "email": user.email,
         "motto": user.motto,
         "gender": user.gender,
@@ -64,6 +66,7 @@ def _get_user_info(id: int):
 @require_POST
 def user_login(request: HttpRequest):
     post_data = parse_data(request)
+    print(f"post data is : {post_data}")
     username = post_data.get('username')
     password = post_data.get('password')
 
@@ -72,6 +75,7 @@ def user_login(request: HttpRequest):
 
     # 使用Django的authenticate函数验证用户名和密码
     user = authenticate(username=username, password=password)
+    print(f"login user is {user}")
 
     # 通过查询邮箱找到对应的用户
     if user is None and '@' in username:
@@ -88,10 +92,6 @@ def user_login(request: HttpRequest):
         request.session['is_login'] = True
         request.session['user_id'] = user.id
         request.session['username'] = user.username
-
-        # TODO：进行真正的多用户登录
-        global login_id
-        login_id = user.id
 
         return success_response({
             "message": "登录成功",

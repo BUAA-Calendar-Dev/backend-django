@@ -14,7 +14,7 @@ from application.utils.response import *
 
 
 def _get_user_name_list(teacher_list: list[User]):
-    return [user.name for user in teacher_list]
+    return [user.username for user in teacher_list]
 
 
 def _get_class_info(_class: Class):
@@ -27,7 +27,7 @@ def _get_class_info(_class: Class):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_class_info(request: HttpRequest, id: int):
     user = request.user
@@ -40,7 +40,7 @@ def get_class_info(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_students(request: HttpRequest, id: int):
     user = request.user
@@ -60,7 +60,7 @@ def get_students(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_teachers(request: HttpRequest, id: int):
     user = request.user
@@ -80,7 +80,7 @@ def get_teachers(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_class_list(request: HttpRequest, id: int):
     user = request.user

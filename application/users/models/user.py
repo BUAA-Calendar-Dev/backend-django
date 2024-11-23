@@ -3,12 +3,13 @@ from django.db import models
 
 from application.users.models.user_value import *
 
+default_avatar = "https://pigkiller-011955-1319328397.cos.ap-beijing.myqcloud.com/img/202407241830349.avif"
+
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
     password = models.CharField(max_length=256, verbose_name="password")
 
-    name = models.CharField(max_length=32, default="保密", verbose_name="name")
     avatar = models.ImageField(upload_to='avatar/', default='avatar/default.png', verbose_name='avatar')
     email = models.EmailField(unique=True, verbose_name='email',
                               error_messages={'unique': '该邮箱已被注册'}, blank=False)
@@ -35,9 +36,7 @@ class User(AbstractUser):
     isDelete = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.name
+        return self.username
 
     class Meta:
         ordering = ['-date_joined']
-        verbose_name = '用户'
-        verbose_name_plural = '用户'

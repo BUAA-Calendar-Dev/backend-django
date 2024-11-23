@@ -11,7 +11,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_tags(request: HttpRequest):
     user = request.user

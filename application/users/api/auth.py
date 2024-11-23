@@ -65,6 +65,7 @@ def byte2str(b):
 
 def get_user(request: HttpRequest) -> User:
     header = request.META.get('HTTP_AUTHORIZATION')
+    print(f"[debug]header is: {header}")
     try:
         if header is None:
             raise jwt.InvalidTokenError
@@ -145,7 +146,7 @@ def jwt_auth(allow_anonymous=False):
                 if allow_anonymous:
                     user = None
                 else:
-                    print("未登录")
+                    print("now at jwt auth, request_user is None")
                     return fail_response(ErrorCode.UNAUTHORIZED_ERROR, '未登录')
             request.user = user
             return api(request, *args, **kwargs)

@@ -24,7 +24,7 @@ def _get_activity_detail(activity: Activity):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_activities_all(request: HttpRequest):
     user = request.user
@@ -45,7 +45,7 @@ def get_activities_all(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_activity_detail(request: HttpRequest, id: int):
     activity = Activity.objects.get(id=id)

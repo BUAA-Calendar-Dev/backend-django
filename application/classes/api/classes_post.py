@@ -12,7 +12,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def create_class(request: HttpRequest):
     user = request.user
@@ -36,7 +36,7 @@ def create_class(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def update_class(request: HttpRequest, id: int):
     user = request.user
@@ -67,7 +67,7 @@ def update_class(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_student(request: HttpRequest, id: int):
     user = request.user
@@ -89,7 +89,7 @@ def add_student(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_students(request: HttpRequest, id: int):
     user = request.user
@@ -113,7 +113,7 @@ def add_students(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_teacher(request: HttpRequest, id: int):
     user = request.user
@@ -135,7 +135,7 @@ def add_teacher(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def add_teachers(request: HttpRequest, id: int):
     user = request.user

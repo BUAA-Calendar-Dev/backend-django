@@ -10,7 +10,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_GET
 def get_messages(request: HttpRequest):
     user = request.user
@@ -24,7 +24,7 @@ def get_messages(request: HttpRequest):
             "title": message.title,
             "content": message.content,
 
-            "from": message.send_user.name,
+            "from": message.send_user.username,
             "time": message.send_time,
             "unread": True if message.is_read else False
         })

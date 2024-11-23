@@ -16,7 +16,7 @@ class Activity(models.Model):
     participants = models.ManyToManyField(User, verbose_name="activity_participants", related_name="activities_in")
     owners = models.ManyToManyField(User, verbose_name="activity_owners", related_name="activities_own")
 
-    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="activities_have_tag")
+    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tags")
 
     def __str__(self):
         return str(self.id)

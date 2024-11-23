@@ -11,7 +11,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def creat_tag(request: HttpRequest):
     user = request.user
@@ -37,7 +37,7 @@ def creat_tag(request: HttpRequest):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def update_tag(request: HttpRequest, id: int):
     user = request.user
@@ -72,7 +72,7 @@ def update_tag(request: HttpRequest, id: int):
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_POST
 def delete_tag(request: HttpRequest, id: int):
     tag_delete = Tag.objects.get(id=id)

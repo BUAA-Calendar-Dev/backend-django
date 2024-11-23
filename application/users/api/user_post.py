@@ -9,7 +9,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-@jwt_auth()
+# @jwt_auth()
 @require_http_methods(['PUT'])
 def update_user(request: HttpRequest):
     user = request.user
