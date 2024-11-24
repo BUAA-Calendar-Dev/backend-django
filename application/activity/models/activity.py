@@ -1,7 +1,6 @@
 from django.db import models
 
 from application.tag.models import Tag
-from application.users.models import User
 
 
 class Activity(models.Model):
@@ -16,7 +15,7 @@ class Activity(models.Model):
     start_time = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name="start_time")
     end_time = models.DateTimeField(blank=True, null=True, verbose_name="end_time")
 
-    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tags")
+    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tag_activities")
 
     def __str__(self):
         return str(self.id)
