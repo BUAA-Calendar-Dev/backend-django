@@ -159,7 +159,7 @@ def create_users(request: HttpRequest):
         password = student_info['password']
 
         status = _check_register_status(username=username, password=password)
-        status_list.append(status)
+        status_list.append({"code": status})
 
         if status == StatusCode.SUCCESS:
             user = User.objects.create_user(username=username, password=password)
