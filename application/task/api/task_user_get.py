@@ -22,8 +22,6 @@ def sort_by_time(tasks_list: list):
 @require_GET
 def get_tasks_related(request: HttpRequest):
     user = request.user
-    print(f"[debug]login user is: {user.username}")
-
     task_user_relationships = list(TaskUserRelationship.objects.filter(related_user=user))
     print(f"[debug]find {len(task_user_relationships)} relas")
 

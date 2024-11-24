@@ -1,8 +1,8 @@
 from django.db import models
 from django.db.models import CASCADE
 
+from application.activity.models import Activity
 from application.tag.models import Tag
-from application.task.models import Task
 from application.users.models import User
 
 PERMISSION_CHOICE = (
@@ -11,31 +11,29 @@ PERMISSION_CHOICE = (
 )
 
 
-class TaskUserRelationship(models.Model):
+class ActivityUserRelationship(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
 
     # 关系标记的唯一任务
-    task = models.ForeignKey(Task, verbose_name="task_ponit", related_name="relationship", on_delete=CASCADE)
+    activity = models.ForeignKey(Activity, verbose_name="activity_ponit", related_name="relationship",
+                                 on_delete=CASCADE)
     # 相关的用户
     related_user = models.ForeignKey(User,
-                                     related_name="task_relationship",
+                                     related_name="related_activities",
                                      on_delete=models.CASCADE,
                                      blank=True, null=True)
 
     # 手动保证为任务名
     name = models.CharField(max_length=256, default="任务名", verbose_name="aliasName")
 
-    # 完成情况
-    percentage = models.FloatField(verbose_name="finish_percentage", default=0)
-
     permission = models.IntegerField(verbose_name="permission", choices=PERMISSION_CHOICE, default=0)
 
     tags = models.ManyToManyField(Tag,
-                                  related_name="tasks_have_tag",
+                                  related_name="activities_have_tag",
                                   blank=True)
 
     def __str__(self):
         return str(self.name)
 
     class Meta:
-        db_table = 'task_user_relationship'
+        db_table = 'activity_user_relationship'

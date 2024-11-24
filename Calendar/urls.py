@@ -12,13 +12,14 @@ urlpatterns = [
         path("user/", include('application.users.urls')),
         # 班级
         path("class/", include('application.classes.urls')),
-
+        # 活动
         path("activity/", include('application.activity.urls')),
+        # 任务
+        path("task/", include('application.task.urls')),
+        path("event/", include('application.task.urls')),
 
         path("message/", include('application.message.urls')),
         path("tag/", include('application.tag.urls')),
-        path("task/", include('application.task.urls')),
-        path("event/", include('application.task.urls')),
 
     ])),
 ]
