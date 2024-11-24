@@ -56,6 +56,8 @@ class StatusCode(Enum):
     REQUEST_MESSAGE_ID_NOT_EXIST = 905
     REQUEST_TAG_ID_NOT_EXIST = 906
     REQUEST_TASK_ID_NOT_EXIST = 907
+    # other
+    OTHER_ERROR = 999
 
 
 @unique
@@ -102,7 +104,7 @@ def _api_response(success, data) -> dict:
     return {'success': success, 'data': data}
 
 
-def success_response(data: dict) -> dict:
+def response(data: dict) -> dict:
     """
     wrap a success response dict obj
     :param data: requested data

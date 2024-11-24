@@ -5,7 +5,11 @@ GENDER_CHOICE = (
 )
 
 IDENTITY_CHOICE = (
-    ('student', "学生"),
-    ('teacher', "老师"),
-    ('root', "管理员")
+    (0, '管理员'),
+    (1, '教师'),
+    (2, '学生')
 )
+
+AUTH_ADMIN = 0
+AUTH_TEACHER = 1
+AUTH_STUDENT = 2

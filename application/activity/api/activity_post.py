@@ -7,7 +7,7 @@ from application.tag.models import Tag
 from application.task.models import Task
 from application.users.api.auth import jwt_auth
 from application.users.models import User
-from application.utils.data_process import parse_data
+from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
@@ -33,6 +33,6 @@ def user_inout_activity(request: HttpRequest, id: int, status: str):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "无效的状态")
 
     activity.save()
-    return success_response({
+    return response({
         "message": f"成功改变用户的{status}"
     })

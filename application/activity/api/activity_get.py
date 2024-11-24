@@ -7,7 +7,7 @@ from application.tag.models import Tag
 from application.task.models import Task
 from application.users.api.auth import jwt_auth
 from application.users.models import User
-from application.utils.data_process import parse_data
+from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
@@ -39,7 +39,7 @@ def get_activities_all(request: HttpRequest):
             "tags": [],  # TODO：对tags列表的处理
             "signed-in": _check_user_in_activity(user, activity)
         })
-    return success_response({
+    return response({
         "activities": info
     })
 
@@ -49,6 +49,6 @@ def get_activities_all(request: HttpRequest):
 @require_GET
 def get_activity_detail(request: HttpRequest, id: int):
     activity = Activity.objects.get(id=id)
-    return success_response({
+    return response({
         "content": _get_activity_detail(activity)
     })

@@ -29,7 +29,7 @@ def send_captcha(request):
     send_status = send_mail(email_title, email_body, settings.EMAIL_HOST_USER, [email])
     if send_status:
         cache.set(email, captcha, 300)
-        return success_response({"message": "邮件发送成功，可能存在一定的延迟，请耐心等待。"})
+        return response({"message": "邮件发送成功，可能存在一定的延迟，请耐心等待。"})
     else:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR,
                              "邮件发送失败，请检查邮箱是否正确。")
@@ -47,6 +47,6 @@ def change_email(request):
         user = request.user
         user.email = new_email
         user.save()
-        return success_response({"message": "邮箱修改成功！"})
+        return response({"message": "邮箱修改成功！"})
     else:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "验证码错误！")

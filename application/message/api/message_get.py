@@ -5,7 +5,7 @@ from application.tag.models import Tag
 from application.task.models import Task
 from application.users.api.auth import jwt_auth
 from application.users.models import User
-from application.utils.data_process import parse_data
+from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
@@ -29,7 +29,7 @@ def get_messages(request: HttpRequest):
             "unread": True if message.is_read else False
         })
 
-    return success_response({
+    return response({
         "messages": messages,
         "messages_num": len(messages)
     })

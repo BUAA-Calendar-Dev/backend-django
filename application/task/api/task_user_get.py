@@ -6,7 +6,7 @@ from application.tag.models import Tag
 from application.task.models import Task, TaskUserRelationship
 from application.users.api.auth import jwt_auth
 from application.users.models import User
-from application.utils.data_process import parse_data
+from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
@@ -39,10 +39,11 @@ def get_tasks_related(request: HttpRequest):
             "task-time": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
             "end": task.end_time.strftime('%Y-%m-%d %H:%M:%S')
         })
+    print(f"[debug]find {len(tasks_list)} tasks")
+    print(f"tasks is {tasks_list}")
 
-    return success_response({
+    return response({
         "specialHours": specialHours,
         # "events": sort_by_time(tasks_list),
         "events": tasks_list,
-
     })
