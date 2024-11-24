@@ -15,15 +15,16 @@ from application.utils.response import *
 @require_GET
 def get_tags(request: HttpRequest):
     user = request.user
-    tags_related = Tag.objects.filter(create_user=user)
+    create_tags = Tag.objects.filter(create_user=user)
 
     tags = []
-    for tag in tags_related:
+    for tag in create_tags:
         tags.append({
             "id": tag.id,
             "title": tag.title,
             "content": tag.content,
-            "color": tag.color
+            "color": tag.color,
+            "fixed": tag.fixed
         })
     return response({
         "tags": tags,

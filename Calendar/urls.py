@@ -17,8 +17,9 @@ urlpatterns = [
         # 任务
         path("task/", include('application.task.urls')),
         path("event/", include('application.task.urls')),
-
+        # 信息
         path("message/", include('application.message.urls')),
+        # 标签
         path("tag/", include('application.tag.urls')),
 
     ])),

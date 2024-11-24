@@ -1,11 +1,7 @@
-from datetime import datetime
 from django.http import HttpRequest
-from django.views.decorators.http import require_POST, require_GET, require_http_methods
+from django.views.decorators.http import require_POST
 
 from application.tag.models import Tag
-from application.task.models import Task
-from application.users.api.auth import jwt_auth
-from application.users.models import User
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
@@ -17,17 +13,17 @@ def creat_tag(request: HttpRequest):
     user = request.user
     request_data = parse_request(request)
 
-    title = request_data.get('title', '新建tag')
+    title = request_data.get('title', 'tag-name')
     if len(title) > 256:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "tag名过长")
 
-    content = request_data.get('content', '暂时没有内容')
+    content = request_data.get('content', 'tag-content')
     if len(content) > 1024:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "描述过长")
 
     color = request_data.get('color', '#FFEFDB')
 
-    tag = Tag(title=title, content=content, create_user=user, color=color)
+    tag = Tag(title=title, content=content, create_user=user, color=color, fixed=False)
     tag.save()
 
     return response({
@@ -39,33 +35,34 @@ def creat_tag(request: HttpRequest):
 @response_wrapper
 # @jwt_auth()
 @require_POST
-def update_tag(request: HttpRequest, id: int):
-    user = request.user
+def modify_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    task = Task.objects.get(id=id)
-    if task is None:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在tag")
+    tag = Tag.objects.get(id=id)
+    if tag is None or tag.fixed:
+        return response({
+            "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST
+        })
 
-    title = request_data.get('title', None)
-    if title is not None:
+    title = request_data.get('title', '')
+    if title:
         if len(title) < 256:
-            task.title = title
+            tag.title = title
         else:
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "tag名过长")
 
-    content = request_data.get('content', None)
-    if content is not None:
+    content = request_data.get('content', '')
+    if content:
         if len(content) < 1024:
-            task.content = content
+            tag.content = content
         else:
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "描述过长")
 
-    color = request_data.get('color', None)
-    if color is not None:
-        task.color = color
+    color = request_data.get('color', '')
+    if color:
+        tag.color = color
 
-    task.save()
+    tag.save()
     return response({
         "message": "成功修改tag"
     })
@@ -75,5 +72,16 @@ def update_tag(request: HttpRequest, id: int):
 # @jwt_auth()
 @require_POST
 def delete_tag(request: HttpRequest, id: int):
-    tag_delete = Tag.objects.get(id=id)
-    tag_delete.delete()
+    tag = Tag.objects.get(id=id)
+    if tag is None:
+        return response({
+            "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST
+        })
+    if tag.fixed:
+        return response({
+            "code": StatusCode.TAG_CANNOT_MODIFY
+        })
+    tag.delete()
+    return response({
+        "message": "成功删除tag"
+    })
