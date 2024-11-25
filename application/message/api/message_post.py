@@ -2,7 +2,6 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST
 
 from application.message.models import Message
-from application.utils.data_process import parse_request
 from application.utils.response import *
 
 

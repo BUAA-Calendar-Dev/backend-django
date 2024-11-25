@@ -1,6 +1,5 @@
 from django.http import HttpRequest
-from django.utils import timezone
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST
 from datetime import datetime
 
 from application.classes.models import Class

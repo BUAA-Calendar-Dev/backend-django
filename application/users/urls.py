@@ -20,5 +20,5 @@ urlpatterns = [
     # 获取id用户的信息
     path('<int:id>/info', get_user_info),
     # 修改当前用户的信息
-    path('modify', update_user)
+    path('modify', modify_user_info)
 ]

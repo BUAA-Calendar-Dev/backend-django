@@ -7,3 +7,5 @@ gen
 __pycache__
 
 setting.json
+
+static/

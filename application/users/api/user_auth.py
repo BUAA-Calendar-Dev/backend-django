@@ -2,6 +2,7 @@ from django.contrib.auth.hashers import make_password
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET
 from django.contrib.auth import authenticate, login, logout
+
 from application.users.api.auth import jwt_auth, generate_token
 from application.users.api.email import varify_captcha
 from application.users.models import User

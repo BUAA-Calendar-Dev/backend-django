@@ -1,12 +1,8 @@
-from datetime import datetime
 from django.http import HttpRequest
-from django.views.decorators.http import require_POST, require_GET, require_http_methods
+from django.views.decorators.http import require_GET
 
-from application.tag.models import Tag
 from application.task.models import Task, TaskUserRelationship
-from application.users.api.auth import jwt_auth
 from application.users.models import User
-from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
