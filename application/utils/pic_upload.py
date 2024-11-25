@@ -1,5 +1,4 @@
 # 实现图片上传并返回链接
-import json
 import logging
 import sys
 import time
@@ -11,11 +10,9 @@ from qcloud_cos import CosS3Client
 
 from Calendar import settings
 
-with open('api_key.json', 'r', encoding='utf-8') as file:
-    data = json.load(file)
-    secret_id = data.get("cos-secret-id")
-    secret_key = data.get("cos-secret-key")
-    bucket_name = data.get("cos-bucket-name")
+secret_id = settings.IMG_SECRET_ID
+secret_key = settings.IMG_SECRET_KEY
+bucket_name = settings.IMG_BUCKET_NAME
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 

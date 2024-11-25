@@ -1,4 +1,6 @@
-# 后端进度安排
+# 前后端对接
+
+## 进度管理
 
 | 描述                                     | 进度     | 备注                                                 |
 | ---------------------------------------- | -------- | ---------------------------------------------------- |
@@ -15,6 +17,52 @@
 | 对代码进行优化：优化import、优化内部逻辑 |          |                                                      |
 | 连接GaussDB                              |          |                                                      |
 | 更新requirements.txt                     |          |                                                      |
+
+## 接口对接
+
+### 图片上传接口
+
+所有上传图片的逻辑为：
+
+1. 前端将图片附在request的FILE中，直接传到后端
+2. 后端将文件上传到图床，向前端返回一个图片地址
+
+前端的请求格式为：
+
+```vue
+<div>
+    <input type="file" @change="onFileChange" style="display: none;" ref="fileInput">
+    <button class="upload-button" @click="triggerFileUpload">上传头像</button>
+</div>
+
+<script>
+triggerFileUpload() {
+    this.$refs.fileInput.click();
+},
+onFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+		const formData = new FormData();
+        formData.append('img', file);
+
+    	// 上传文件到服务器
+        apiClient.post('.../update-avatar/', formData)
+            .then(response => {
+           		this.user.avatar = response.data.avatar;
+        })
+        .catch(error => {
+            console.error('Error uploading file:', error);
+        });
+    }
+},
+</script>
+```
+
+
+
+
+
+
 
 # 项目简介
 

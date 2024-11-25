@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -9,6 +10,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# 配置图床的相关信息
+with open('api_key.json', 'r', encoding='utf-8') as file:
+    setting = json.load(file)
+    IMG_SECRET_ID = setting['IMG_SECRET_ID']
+    IMG_SECRET_KEY = setting['IMG_SECRET_KEY']
+    IMG_BUCKET_NAME = setting['IMG_BUCKET_NAME']
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
