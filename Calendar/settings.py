@@ -2,6 +2,8 @@ import json
 import os
 from pathlib import Path
 
+DEVELOP = False
+
 # secret key
 SECRET_KEY = "ThisIsOurDataBaseBackEnd"
 
@@ -30,7 +32,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    "192.168.0.52"
+    "192.168.0.52",
+    "127.0.0.1"
 ]
 
 # Application definition
@@ -88,24 +91,34 @@ WSGI_APPLICATION = "Calendar.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
+DATABASE_DEVELOP = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-        # "ATOMIC_REQUESTS": True,
-        # "ENGINE": "django.db.backends.postgresql",
-        # # 数据库名
-        # "NAME": DB_NAME,
-        # # 用户名
-        # "USER": DB_USER,
-        # # 密码
-        # "PASSWORD": DB_PASSWORD,
-        # # 数据库主节点IP
-        # "HOST": DB_HOST,
-        # # 端口
-        # "PORT": DB_PORT
     }
 }
+
+DATABASE_GAUSS = {
+    "default": {
+        "ATOMIC_REQUESTS": True,
+        "ENGINE": "django.db.backends.mysql",
+        # 数据库名
+        "NAME": DB_NAME,
+        # 用户名
+        "USER": DB_USER,
+        # 密码
+        "PASSWORD": DB_PASSWORD,
+        # 数据库主节点IP
+        "HOST": DB_HOST,
+        # 端口
+        "PORT": DB_PORT,
+        "OPTIONS": {
+            "init_command": "SET sql_mode = 'STRICT_TRANS_TABLES'"
+        }
+    }
+}
+
+DATABASES = DATABASE_DEVELOP if DEVELOP else DATABASE_GAUSS
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

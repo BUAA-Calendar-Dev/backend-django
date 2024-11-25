@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from Calendar import settings
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin", admin.site.urls),
 
     path("api/token/", include('application.csrf.csrf_token')),
     # 用户
