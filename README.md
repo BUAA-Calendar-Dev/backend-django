@@ -15,10 +15,19 @@
 | 对图床功能进行调试                       | 完成     |                                                      |
 | 上传头像接口                             | 完成     |                                                      |
 | 对代码进行优化：优化import、优化内部逻辑 | 完成     |                                                      |
-| 连接GaussDB                              | 失败     | 还在询问助教                                         |
+| 连接GaussDB                              | 完成     |                                                      |
 | 更新requirements.txt                     | 完成     |                                                      |
 
 ## 接口对接
+
+### 数据库切换
+
+修改`Calendar/settings.py`中的`DEVELOP = False`
+
+- develop模式下使用本地的数据库sqlite3
+- 生产模式下使用GaussDB
+
+访问GaussDB后台可以访问[网址](https://auth.huaweicloud.com/authui/login?id=beihangdb)，选择数据库/数据管理服务DRS，登录相应的数据库进行数据管理
 
 ### 图片上传接口
 
@@ -87,7 +96,7 @@ python manage.py runserver
 
 密码：123456
 
-访问管理网站：http://127.0.0.1:8000/admin/
+访问管理网站：http://127.0.0.1:8000/admin
 
 # 项目结构
 
