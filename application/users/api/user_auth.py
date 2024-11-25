@@ -1,4 +1,5 @@
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import AnonymousUser
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET
 from django.contrib.auth import authenticate, login, logout
@@ -22,7 +23,7 @@ def user_login(request: HttpRequest):
 
     # 使用Django的authenticate函数验证用户名和密码
     user = authenticate(username=username, password=password)
-    print(f"[debug]login user is {user}")
+    print(f"[debug]login user is {user} {username} {password}")
 
     # 通过查询邮箱找到对应的用户
     if user is None and '@' in username:
@@ -111,10 +112,13 @@ def _check_register_status(username, password, email=''):
 @require_POST
 def user_register(request: HttpRequest):
     if request.session.get('is_login', None):
-        print(f"[debug]已经登录")
-        return response({
-            "message": "已经登录"
-        })
+        if request.user is not AnonymousUser:
+            print(f"[debug] login user is AnonymousUser")
+        else:
+            print(f"[debug]已经登录")
+            return response({
+                "message": "已经登录"
+            })
 
     request_data = parse_request(request)
     username = request_data.get('username', None)
@@ -128,6 +132,7 @@ def user_register(request: HttpRequest):
     check_code = _check_register_status(username=username,
                                         password=password,
                                         email=email)
+    print(f"[debug]check code is {check_code}")
     if check_code == StatusCode.SUCCESS:
         # 创建新用户
         user = User.objects.create_user(username=username, password=password)
@@ -136,7 +141,7 @@ def user_register(request: HttpRequest):
         if phone is not None:
             user.phone = phone
         user.save()
-
+        print("[debug]注册成功")
         return response({
             "message": "注册成功"
         })
