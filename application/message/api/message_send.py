@@ -15,7 +15,7 @@ from application.utils.response import *
 def send_to_student(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    student = User.objects.get(id=id)
+    student = User.objects.filter(id=id).first()
     if student is None:
         return response({
             "code": StatusCode.REQUEST_USER_ID_NOT_EXIST
@@ -37,7 +37,7 @@ def send_to_student(request: HttpRequest, id: int):
 def send_to_class(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
     if _class is None:
         return response({
             "code": StatusCode.REQUEST_USER_ID_NOT_EXIST

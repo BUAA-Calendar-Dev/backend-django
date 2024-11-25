@@ -37,7 +37,7 @@ def create_activity(request: HttpRequest):
 @require_POST
 def modify_activity(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
     if activity is None:
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
@@ -64,7 +64,7 @@ def modify_activity(request: HttpRequest, id: int):
 # @jwt_auth()
 @require_POST
 def delete_activity(request: HttpRequest, id: int):
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
     if activity is None:
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
@@ -80,7 +80,7 @@ def delete_activity(request: HttpRequest, id: int):
 @require_POST
 def user_inout_activity(request: HttpRequest, id: int, status: str):
     user = request.user
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
 
     if activity is None:
         return response({
@@ -121,7 +121,7 @@ def add_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
     user = request.user
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
     if activity is None:
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
@@ -129,7 +129,7 @@ def add_tag(request: HttpRequest, id: int):
     relationship = ActivityUserRelationship.objects.filter(task=activity, related_user=user).first()
 
     tag_id = request_data.get('tag-id')
-    tag = Tag.objects.get(id=tag_id)
+    tag = Tag.objects.filter(id=tag_id).first()
 
     relationship.tags.add(tag)
     relationship.save()
@@ -146,7 +146,7 @@ def remove_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
     user = request.user
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
     if activity is None:
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
@@ -154,7 +154,7 @@ def remove_tag(request: HttpRequest, id: int):
     relationship = ActivityUserRelationship.objects.filter(task=activity, related_user=user).first()
 
     tag_id = request_data.get('tag-id')
-    tag = Tag.objects.get(id=tag_id)
+    tag = Tag.objects.filter(id=tag_id).first()
 
     relationship.tags.remove(tag)
     relationship.save()

@@ -4,7 +4,7 @@ from .api import *
 
 urlpatterns = [
     # 查询信息
-    path('', get_messages),
+    path('info', get_messages),
     # 阅读信息
     path('<int:id>/read', read_message),
     # 发送给学生

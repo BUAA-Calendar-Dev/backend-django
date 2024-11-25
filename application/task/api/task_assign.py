@@ -17,7 +17,7 @@ from application.utils.response import *
 def assign_to_student(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    student = User.objects.get(id=id)
+    student = User.objects.filter(id=id).first()
     if student is None:
         return response({
             "code": StatusCode.REQUEST_USER_ID_NOT_EXIST
@@ -31,7 +31,7 @@ def assign_to_student(request: HttpRequest, id: int):
     task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
     if tags:
         for tag_id in tags:
-            tag = Tag.objects.get(id=tag_id)
+            tag = Tag.objects.filter(id=tag_id).first()
             if tag:
                 task.tags.add(tag)
     task.save()
@@ -50,7 +50,7 @@ def assign_to_student(request: HttpRequest, id: int):
 def assign_to_class(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
     if _class is None:
         return response({
             "code": StatusCode.REQUEST_USER_ID_NOT_EXIST
@@ -64,7 +64,7 @@ def assign_to_class(request: HttpRequest, id: int):
     task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
     if tags:
         for tag_id in tags:
-            tag = Tag.objects.get(id=tag_id)
+            tag = Tag.objects.filter(id=tag_id).first()
             if tag:
                 task.tags.add(tag)
     task.save()
@@ -92,7 +92,7 @@ def assign_to_school(request: HttpRequest, id: int):
     task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
     if tags:
         for tag_id in tags:
-            tag = Tag.objects.get(id=tag_id)
+            tag = Tag.objects.filter(id=tag_id).first()
             if tag:
                 task.tags.add(tag)
     task.save()

@@ -28,7 +28,7 @@ def _get_class_info(_class: Class):
 # @jwt_auth()
 @require_GET
 def get_class_info(request: HttpRequest, id: int):
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
 
@@ -41,7 +41,7 @@ def get_class_info(request: HttpRequest, id: int):
 def get_students(request: HttpRequest, id: int):
     user = request.user
     request_data = parse_request(request)
-    class_ = Class.objects.get(id=id)
+    class_ = Class.objects.filter(id=id).first()
     if class_ is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
 
@@ -59,7 +59,7 @@ def get_students(request: HttpRequest, id: int):
 # @jwt_auth()
 @require_GET
 def get_teachers(request: HttpRequest, id: int):
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
 
@@ -77,7 +77,7 @@ def get_teachers(request: HttpRequest, id: int):
 # @jwt_auth()
 @require_POST
 def get_class_info_list(request: HttpRequest):
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.filter(id=request.user.id).first()
     if user.identity == AUTH_STUDENT:
         classes = user.classes
     else:

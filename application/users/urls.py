@@ -16,7 +16,7 @@ urlpatterns = [
     path('reset_password', change_password),
 
     # 获取当前用户的信息
-    path('', get_current_user_info),
+    path('info', get_current_user_info),
     # 获取id用户的信息
     path('<int:id>/info', get_user_info),
     # 修改当前用户的信息

@@ -14,7 +14,7 @@ def add_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
     user = request.user
 
-    task = Task.objects.get(id=id)
+    task = Task.objects.filter(id=id).first()
     if task is None:
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
@@ -26,7 +26,7 @@ def add_tag(request: HttpRequest, id: int):
         })
 
     tag_id = request_data.get('tag-id')
-    tag = Tag.objects.get(id=tag_id)
+    tag = Tag.objects.filter(id=tag_id).first()
     if tag is None:
         return response({
             "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST
@@ -51,7 +51,7 @@ def remove_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
     user = request.user
 
-    task = Task.objects.get(id=id)
+    task = Task.objects.filter(id=id).first()
     if task is None:
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
@@ -63,7 +63,7 @@ def remove_tag(request: HttpRequest, id: int):
         })
 
     tag_id = request_data.get('tag-id')
-    tag = Tag.objects.get(id=tag_id)
+    tag = Tag.objects.filter(id=tag_id).first()
     if tag is None:
         return response({
             "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST

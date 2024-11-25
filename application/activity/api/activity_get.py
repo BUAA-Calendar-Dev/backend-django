@@ -62,7 +62,7 @@ def get_public_activities(request: HttpRequest):
 # @jwt_auth()
 @require_GET
 def get_activity_detail(request: HttpRequest, id: int):
-    activity = Activity.objects.get(id=id)
+    activity = Activity.objects.filter(id=id).first()
     if activity is None:
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST

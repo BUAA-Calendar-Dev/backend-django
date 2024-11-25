@@ -22,7 +22,7 @@ urlpatterns = [
     path("api/tag/", include('application.tag.urls')),
 
     # 适配event的接口
-    path("api/enent/", include('application.activity.urls'))
+    path("api/event/", include('application.activity.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

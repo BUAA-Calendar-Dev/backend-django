@@ -14,5 +14,5 @@ urlpatterns = [
     # 批量移除学生
     path('<int:id>/student/delete', remove_students),
     # 查询自己的班级
-    path('', get_class_info_list)
+    path('info', get_class_info_list)
 ]

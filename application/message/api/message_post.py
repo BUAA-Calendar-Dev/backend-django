@@ -9,7 +9,7 @@ from application.utils.response import *
 # @jwt_auth()
 @require_POST
 def read_message(request: HttpRequest, id: int):
-    message = Message.objects.get(id=id)
+    message = Message.objects.filter(id=id).first()
     if message is None:
         return response({
             "code": StatusCode.REQUEST_MESSAGE_ID_NOT_EXIST

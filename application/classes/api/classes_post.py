@@ -36,7 +36,7 @@ def create_class(request: HttpRequest):
 def update_class(request: HttpRequest, id: int):
     user = request.user
     request_data = parse_request(request)
-    class_ = Class.objects.get(id=id)
+    class_ = Class.objects.filter(id=id).first()
 
     if class_ is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
@@ -62,7 +62,7 @@ def update_class(request: HttpRequest, id: int):
 
 
 def _add_student(_class: Class, id: int):
-    student = User.objects.get(id=id)
+    student = User.objects.filter(id=id).first()
     if student is not None and student in _class.students.all():
         return StatusCode.STUDENT_ALREADY_IN_CLASS
     _class.students.add(student)
@@ -75,7 +75,7 @@ def _add_student(_class: Class, id: int):
 @require_POST
 def add_students(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
 
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
@@ -93,7 +93,7 @@ def add_students(request: HttpRequest, id: int):
 
 
 def _remove_student(_class: Class, id: int):
-    student = User.objects.get(id=id)
+    student = User.objects.filter(id=id).first()
     if student is None or student not in _class.students.all():
         return StatusCode.STUDENT_NOT_IN_CLASS
     _class.students.remove(student)
@@ -106,7 +106,7 @@ def _remove_student(_class: Class, id: int):
 @require_POST
 def remove_students(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
 
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
@@ -124,7 +124,7 @@ def remove_students(request: HttpRequest, id: int):
 
 
 def _add_teacher(_class: Class, id: int):
-    teacher = User.objects.get(id=id)
+    teacher = User.objects.filter(id=id).first()
     if teacher is not None and teacher in _class.teachers.all():
         return StatusCode.TEACHER_ALREADY_IN_CLASS
     _class.teachers.add(teacher)
@@ -137,7 +137,7 @@ def _add_teacher(_class: Class, id: int):
 @require_POST
 def add_teachers(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
 
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
@@ -155,7 +155,7 @@ def add_teachers(request: HttpRequest, id: int):
 
 
 def _remove_teacher(_class: Class, id: int):
-    teacher = User.objects.get(id=id)
+    teacher = User.objects.filter(id=id).first()
     if teacher is None or teacher not in _class.teachers.all():
         return StatusCode.TEACHER_NOT_IN_CLASS
     _class.teachers.remove(teacher)
@@ -168,7 +168,7 @@ def _remove_teacher(_class: Class, id: int):
 @require_POST
 def remove_teachers(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    _class = Class.objects.get(id=id)
+    _class = Class.objects.filter(id=id).first()
 
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")

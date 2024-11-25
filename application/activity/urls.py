@@ -14,7 +14,7 @@ urlpatterns = [
     # 删除tag
     path('<int:id>/tag/delete', remove_tag),
     # 创建活动
-    path('', create_activity),
+    path('create', create_activity),
     # 修改活动
     path('<int:id>/modify', modify_activity),
     # 删除活动

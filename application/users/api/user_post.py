@@ -51,7 +51,7 @@ def impower_user(request: HttpRequest):
     request_data = parse_request(request)
     user_id = request_data.get('userid')
 
-    user = User.objects.get(id=user_id)
+    user = User.objects.filter(id=user_id).first()
     user.identity = AUTH_TEACHER
     user.save()
 
@@ -63,7 +63,7 @@ def impower_user(request: HttpRequest):
 @response_wrapper
 @require_POST
 def update_avatar(request):
-    user = User.objects.get(id=request.user.id)
+    user = User.objects.filter(id=request.user.id).first()
 
     # 由前端指定的name获取到图片数据
     img = request.FILES.get('img')

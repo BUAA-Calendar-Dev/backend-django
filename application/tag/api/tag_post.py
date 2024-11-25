@@ -38,7 +38,7 @@ def creat_tag(request: HttpRequest):
 def modify_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
 
-    tag = Tag.objects.get(id=id)
+    tag = Tag.objects.filter(id=id).first()
     if tag is None or tag.fixed:
         return response({
             "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST
@@ -72,7 +72,7 @@ def modify_tag(request: HttpRequest, id: int):
 # @jwt_auth()
 @require_POST
 def delete_tag(request: HttpRequest, id: int):
-    tag = Tag.objects.get(id=id)
+    tag = Tag.objects.filter(id=id).first()
     if tag is None:
         return response({
             "code": StatusCode.REQUEST_TAG_ID_NOT_EXIST

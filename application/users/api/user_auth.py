@@ -179,7 +179,7 @@ def create_users(request: HttpRequest):
 @require_POST
 def reset_password(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    user = User.objects.get(id=id)
+    user = User.objects.filter(id=id).first()
     password = request_data.get('password')
 
     user.password = make_password(password)

@@ -4,7 +4,7 @@ from .api import *
 
 urlpatterns = [
     # 查询用户相关的task
-    path('', get_related_tasks),
+    path('info', get_related_tasks),
     # 设置任务完成百分比
     path('<int:id>/percentage', set_percentage),
     # 设置任务提醒

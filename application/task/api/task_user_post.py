@@ -63,7 +63,7 @@ def set_percentage(request: HttpRequest, id: int):
     request_data = parse_request(request)
     user = request.user
 
-    task = Task.objects.get(id=id)
+    task = Task.objects.filter(id=id).first()
     if task is None:
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
@@ -91,7 +91,7 @@ def set_alarms(request: HttpRequest, id: int):
     request_data = parse_request(request)
     user = request.user
 
-    task = Task.objects.get(id=id)
+    task = Task.objects.filter(id=id).first()
     if task is None:
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
@@ -122,7 +122,7 @@ def modify_task(request: HttpRequest, id: int):
     request_data = parse_request(request)
     user = request.user
 
-    task = Task.objects.get(id=id)
+    task = Task.objects.filter(id=id).first()
     if task is None:
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
@@ -141,7 +141,7 @@ def modify_task(request: HttpRequest, id: int):
         task.content = content
     if tags:
         for tag_id in tags:
-            tag = Tag.objects.get(id=tag_id)
+            tag = Tag.objects.filter(id=tag_id).first()
             if tag:
                 task.tags.add(tag)
     task.save()
