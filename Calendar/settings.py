@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-DEVELOP = False
+DEVELOP = True
 
 # secret key
 SECRET_KEY = "ThisIsOurDataBaseBackEnd"
