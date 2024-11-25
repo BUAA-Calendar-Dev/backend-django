@@ -11,12 +11,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# 配置图床的相关信息
 with open('setting.json', 'r', encoding='utf-8') as file:
     setting = json.load(file)
     IMG_SECRET_ID = setting['IMG_SECRET_ID']
     IMG_SECRET_KEY = setting['IMG_SECRET_KEY']
     IMG_BUCKET_NAME = setting['IMG_BUCKET_NAME']
+
+    DB_NAME = setting['DB_NAME']
+    DB_USER = setting['DB_USER']
+    DB_PASSWORD = setting['DB_PASSWORD']
+    DB_HOST = setting['DB_HOST']
+    DB_PORT = setting['DB_PORT']
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -24,7 +29,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "192.168.0.52"
+]
 
 # Application definition
 
@@ -85,6 +92,18 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
+        # "ATOMIC_REQUESTS": True,
+        # "ENGINE": "django.db.backends.postgresql",
+        # # 数据库名
+        # "NAME": DB_NAME,
+        # # 用户名
+        # "USER": DB_USER,
+        # # 密码
+        # "PASSWORD": DB_PASSWORD,
+        # # 数据库主节点IP
+        # "HOST": DB_HOST,
+        # # 端口
+        # "PORT": DB_PORT
     }
 }
 

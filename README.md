@@ -15,8 +15,8 @@
 | 对图床功能进行调试                       | 完成     |                                                      |
 | 上传头像接口                             | 完成     |                                                      |
 | 对代码进行优化：优化import、优化内部逻辑 | 完成     |                                                      |
-| 连接GaussDB                              |          |                                                      |
-| 更新requirements.txt                     |          |                                                      |
+| 连接GaussDB                              | 失败     | 还在询问助教                                         |
+| 更新requirements.txt                     | 完成     |                                                      |
 
 ## 接口对接
 

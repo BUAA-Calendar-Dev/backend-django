@@ -2,3 +2,4 @@ Django
 django-cors-headers
 cos-python-sdk-v5
 PyJWT
+psycopg2
