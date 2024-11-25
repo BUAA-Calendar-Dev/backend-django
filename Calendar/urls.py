@@ -16,11 +16,13 @@ urlpatterns = [
     path("api/activity/", include('application.activity.urls')),
     # 任务
     path("api/task/", include('application.task.urls')),
-    path("api/event/", include('application.task.urls')),
     # 信息
     path("api/message/", include('application.message.urls')),
     # 标签
     path("api/tag/", include('application.tag.urls')),
+
+    # 适配event的接口
+    path("api/enent/", include('application.activity.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

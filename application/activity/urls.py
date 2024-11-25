@@ -18,5 +18,9 @@ urlpatterns = [
     # 修改活动
     path('<int:id>/modify', modify_activity),
     # 删除活动
-    path('<int:id>/delete', delete_activity)
+    path('<int:id>/delete', delete_activity),
+
+    # 适配event的接口
+    path('e', get_events),
+    path('e/create', create_event)
 ]

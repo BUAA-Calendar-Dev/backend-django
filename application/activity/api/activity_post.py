@@ -162,3 +162,29 @@ def remove_tag(request: HttpRequest, id: int):
     return response({
         "message": "成功移除tag"
     })
+
+
+@response_wrapper
+# @jwt_auth()
+@require_POST
+def create_event(request: HttpRequest):
+    request_data = parse_request(request)
+
+    title = request_data.get('name')
+    content = request_data.get('content')
+    time = request_data.get('start')
+    end = request_data.get('end')
+
+    activity = Activity(
+        is_public=True,
+        title=title,
+        content=content,
+        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"),
+        end_time=datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+    )
+    activity.save()
+
+    return response({
+        "message": "成功创建活动",
+        "event": activity
+    })

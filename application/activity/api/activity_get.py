@@ -70,3 +70,26 @@ def get_activity_detail(request: HttpRequest, id: int):
     return response({
         "content": _get_activity_detail(activity)
     })
+
+
+@response_wrapper
+# @jwt_auth()
+@require_GET
+def get_events(request: HttpRequest, id: int):
+    user = request.user
+    activity_list = Activity.objects.filter(is_public=True)
+
+    activity_info_list = []
+    for activity in activity_list:
+        activity_info_list.append({
+            "id": activity.id,
+            "name": activity.title,
+            "time": activity.start_time,
+            # tag是活动自带tag和用户自定义tag的和
+            "tags": _get_activity_tag_list(activity, user),
+            "signed-in": _check_user_in_activity(user, activity)
+        })
+    return response({
+        "events": activity_info_list,
+        "specialHours": []
+    })
