@@ -2,6 +2,7 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET
 
 from application.classes.models import Class
+from application.users.api import jwt_auth
 from application.users.api.user_get import _get_user_info
 from application.users.models import User
 from application.users.models.user_value import *
@@ -25,7 +26,7 @@ def _get_class_info(_class: Class):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_class_info(request: HttpRequest, id: int):
     _class = Class.objects.filter(id=id).first()
@@ -36,7 +37,7 @@ def get_class_info(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_students(request: HttpRequest, id: int):
     user = request.user
@@ -56,7 +57,7 @@ def get_students(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_teachers(request: HttpRequest, id: int):
     _class = Class.objects.filter(id=id).first()
@@ -74,7 +75,7 @@ def get_teachers(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def get_class_info_list(request: HttpRequest):
     user = User.objects.filter(id=request.user.id).first()

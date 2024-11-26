@@ -2,11 +2,12 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST
 
 from application.message.models import Message
+from application.users.api import jwt_auth
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def read_message(request: HttpRequest, id: int):
     message = Message.objects.filter(id=id).first()

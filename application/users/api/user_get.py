@@ -1,5 +1,7 @@
 from django.http import HttpRequest
 from django.views.decorators.http import require_GET
+
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.utils.response import *
 
@@ -23,7 +25,7 @@ def _get_user_info(id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_current_user_info(request: HttpRequest):
     user = request.user
@@ -36,7 +38,7 @@ def get_current_user_info(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_user_info(request: HttpRequest, id: int):
     info = _get_user_info(id)

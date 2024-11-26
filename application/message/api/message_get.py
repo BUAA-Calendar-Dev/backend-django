@@ -1,11 +1,12 @@
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET, require_http_methods
 
+from application.users.api import jwt_auth
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_messages(request: HttpRequest):
     user = request.user

@@ -5,6 +5,7 @@ from datetime import datetime
 from application.classes.models import Class
 from application.tag.models import Tag
 from application.task.models import Task, TaskUserRelationship
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.users.models.user_value import AUTH_STUDENT
 from application.utils.data_process import parse_request
@@ -12,7 +13,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def assign_to_student(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -28,7 +29,7 @@ def assign_to_student(request: HttpRequest, id: int):
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
+    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H"), content=content)
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
@@ -45,7 +46,7 @@ def assign_to_student(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def assign_to_class(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -61,7 +62,7 @@ def assign_to_class(request: HttpRequest, id: int):
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
+    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M"), content=content)
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
@@ -78,7 +79,7 @@ def assign_to_class(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def assign_to_school(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -89,7 +90,7 @@ def assign_to_school(request: HttpRequest, id: int):
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"), content=content)
+    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M"), content=content)
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()

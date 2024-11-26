@@ -3,6 +3,7 @@ from django.views.decorators.http import require_POST
 
 from application.classes.models import Class
 from application.message.models import Message
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.users.models.user_value import AUTH_STUDENT
 from application.utils.data_process import parse_request
@@ -10,7 +11,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def send_to_student(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -32,7 +33,7 @@ def send_to_student(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def send_to_class(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -54,7 +55,7 @@ def send_to_class(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def send_to_school(request: HttpRequest):
     request_data = parse_request(request)

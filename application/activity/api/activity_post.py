@@ -5,12 +5,13 @@ from datetime import datetime
 from application.activity.models import Activity
 from application.activity.models.activity_user_relationship import ActivityUserRelationship
 from application.tag.models import Tag
+from application.users.api import jwt_auth
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def create_activity(request: HttpRequest):
     request_data = parse_request(request)
@@ -23,7 +24,7 @@ def create_activity(request: HttpRequest):
         is_public=True,
         title=title,
         content=content,
-        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M")
     )
     activity.save()
 
@@ -33,7 +34,7 @@ def create_activity(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def modify_activity(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -52,7 +53,7 @@ def modify_activity(request: HttpRequest, id: int):
     if content:
         activity.content = content
     if time:
-        activity.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+        activity.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
     activity.save()
 
     return response({
@@ -61,7 +62,7 @@ def modify_activity(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def delete_activity(request: HttpRequest, id: int):
     activity = Activity.objects.filter(id=id).first()
@@ -76,7 +77,7 @@ def delete_activity(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def user_inout_activity(request: HttpRequest, id: int, status: str):
     user = request.user
@@ -115,7 +116,7 @@ def user_inout_activity(request: HttpRequest, id: int, status: str):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def add_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -140,7 +141,7 @@ def add_tag(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def remove_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -165,7 +166,7 @@ def remove_tag(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def create_event(request: HttpRequest):
     request_data = parse_request(request)
@@ -179,8 +180,8 @@ def create_event(request: HttpRequest):
         is_public=True,
         title=title,
         content=content,
-        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M:%S"),
-        end_time=datetime.strptime(end, "%Y-%m-%d %H:%M:%S")
+        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end, "%Y-%m-%d %H:%M")
     )
     activity.save()
 

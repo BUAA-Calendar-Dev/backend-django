@@ -4,7 +4,7 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST
 
 from Calendar import settings
-from application.users.api import name_not_allow
+from application.users.api import name_not_allow, jwt_auth
 from application.users.models import User
 from application.users.models.user_value import AUTH_TEACHER
 from application.utils.data_process import parse_request
@@ -13,7 +13,7 @@ from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def modify_user_info(request: HttpRequest):
     user = request.user
@@ -45,7 +45,7 @@ def modify_user_info(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def impower_user(request: HttpRequest):
     request_data = parse_request(request)

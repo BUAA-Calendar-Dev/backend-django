@@ -68,18 +68,19 @@ def get_user(request: HttpRequest) -> User:
     print(f"[debug]header is: {header}")
     try:
         if header is None:
+            print(f"[debug]no header")
             raise jwt.InvalidTokenError
 
         # 解码token
         auth_info = header.split(' ')
 
         if len(auth_info) != 2:
+            print(f"[debug]auth info len error")
             raise jwt.InvalidTokenError
         auth_type, auth_token = auth_info
 
-        if auth_type != 'Bearer':
-            raise jwt.InvalidTokenError
         payload = jwt.decode(auth_token, key=settings.SECRET_KEY, algorithms=['HS256'])
+        print(f"[debug] payload is {payload}")
 
         if payload['type'] != 'access_token':
             raise jwt.InvalidTokenError
@@ -149,6 +150,7 @@ def jwt_auth(allow_anonymous=False):
                     print("now at jwt auth, request_user is None")
                     return fail_response(ErrorCode.UNAUTHORIZED_ERROR, '未登录')
             request.user = user
+            print(f"[debug] jwt's request.user is {request.user}")
             return api(request, *args, **kwargs)
 
         return wrapper

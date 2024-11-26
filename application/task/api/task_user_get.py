@@ -2,6 +2,7 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_GET
 
 from application.task.models import Task, TaskUserRelationship
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.utils.response import *
 
@@ -31,7 +32,7 @@ def _get_alarms(relationship: TaskUserRelationship):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_related_tasks(request: HttpRequest):
     user = request.user

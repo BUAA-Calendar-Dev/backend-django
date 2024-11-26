@@ -6,12 +6,13 @@ from datetime import datetime
 from application.tag.models import Tag
 from application.task.models import Task, TaskUserRelationship
 from application.task.models.alarm import Alarm
+from application.users.api import jwt_auth
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def creat_task(request: HttpRequest):
     # 创建一个task，同时注册相关关系
@@ -57,7 +58,7 @@ def creat_task(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def set_percentage(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -85,7 +86,7 @@ def set_percentage(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def set_alarms(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -116,7 +117,7 @@ def set_alarms(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def modify_task(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -136,7 +137,7 @@ def modify_task(request: HttpRequest, id: int):
     if title:
         task.title = title
     if time:
-        task.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
+        task.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
     if content:
         task.content = content
     if tags:

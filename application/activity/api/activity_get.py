@@ -3,6 +3,7 @@ from django.views.decorators.http import require_GET
 
 from application.activity.models import Activity
 from application.activity.models.activity_user_relationship import ActivityUserRelationship
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.utils.data_process import parse_request
 from application.utils.response import *
@@ -37,7 +38,7 @@ def _get_activity_tag_list(activity: Activity, user: User):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_public_activities(request: HttpRequest):
     user = request.user
@@ -59,7 +60,7 @@ def get_public_activities(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_activity_detail(request: HttpRequest, id: int):
     activity = Activity.objects.filter(id=id).first()
@@ -73,7 +74,7 @@ def get_activity_detail(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_GET
 def get_events(request: HttpRequest):
     user = request.user

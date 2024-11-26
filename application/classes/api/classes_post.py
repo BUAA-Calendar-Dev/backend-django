@@ -2,13 +2,14 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST
 
 from application.classes.models import Class
+from application.users.api import jwt_auth
 from application.users.models import User
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def create_class(request: HttpRequest):
     request_data = parse_request(request)
@@ -31,7 +32,7 @@ def create_class(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def update_class(request: HttpRequest, id: int):
     user = request.user
@@ -71,7 +72,7 @@ def _add_student(_class: Class, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def add_students(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -102,7 +103,7 @@ def _remove_student(_class: Class, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def remove_students(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -133,7 +134,7 @@ def _add_teacher(_class: Class, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def add_teachers(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -164,7 +165,7 @@ def _remove_teacher(_class: Class, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def remove_teachers(request: HttpRequest, id: int):
     request_data = parse_request(request)

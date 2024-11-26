@@ -2,12 +2,13 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST
 
 from application.tag.models import Tag
+from application.users.api import jwt_auth
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def creat_tag(request: HttpRequest):
     user = request.user
@@ -33,7 +34,7 @@ def creat_tag(request: HttpRequest):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def modify_tag(request: HttpRequest, id: int):
     request_data = parse_request(request)
@@ -69,7 +70,7 @@ def modify_tag(request: HttpRequest, id: int):
 
 
 @response_wrapper
-# @jwt_auth()
+@jwt_auth()
 @require_POST
 def delete_tag(request: HttpRequest, id: int):
     tag = Tag.objects.filter(id=id).first()
