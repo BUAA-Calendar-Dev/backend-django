@@ -75,7 +75,7 @@ def get_activity_detail(request: HttpRequest, id: int):
 @response_wrapper
 # @jwt_auth()
 @require_GET
-def get_events(request: HttpRequest, id: int):
+def get_events(request: HttpRequest):
     user = request.user
     activity_list = Activity.objects.filter(is_public=True)
 
