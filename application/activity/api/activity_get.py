@@ -10,7 +10,7 @@ from application.utils.response import *
 
 
 def _check_user_in_activity(user: User, activity: Activity):
-    relationship = ActivityUserRelationship.objects.filter(related_user=user, task=activity).first()
+    relationship = ActivityUserRelationship.objects.filter(related_user=user, activity=activity).first()
     return relationship is not None
 
 
@@ -90,6 +90,7 @@ def get_events(request: HttpRequest):
             "tags": _get_activity_tag_list(activity, user),
             "signed-in": _check_user_in_activity(user, activity)
         })
+    print(f"[debug] {activity_info_list}")
     return response({
         "events": activity_info_list,
         "specialHours": []
