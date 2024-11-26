@@ -26,7 +26,7 @@ def _get_activity_detail(activity: Activity):
 
 def _get_activity_tag_list(activity: Activity, user: User):
     tag_list = set()
-    relationship = ActivityUserRelationship.objects.filter(related_user=user, task=activity).first()
+    relationship = ActivityUserRelationship.objects.filter(related_user=user, activity=activity).first()
 
     # 添加活动的标签
     tag_list.update(activity.tags.all())

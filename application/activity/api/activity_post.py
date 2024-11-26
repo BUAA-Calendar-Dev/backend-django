@@ -187,5 +187,4 @@ def create_event(request: HttpRequest):
 
     return response({
         "message": "成功创建活动",
-        "event": activity
     })
