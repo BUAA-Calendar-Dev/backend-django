@@ -17,10 +17,25 @@ def _check_user_in_activity(user: User, activity: Activity):
 def _get_activity_detail(activity: Activity):
     return {
         "id": activity.id,
-        "name": activity.title,
+        "title": activity.title,
         "content": activity.content,
+        "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+        "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
+        "place": activity.place
+    }
+
+
+def _get_activity_user_detail(activity: Activity, user: User):
+    return {
+        "id": activity.id,
+        "title": activity.title,
+        "content": activity.content,
+        "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+        "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
         "place": activity.place,
-        "time": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+        # tag是活动自带tag和用户自定义tag的和
+        "tags": _get_activity_tag_list(activity, user),
+        "signed-in": _check_user_in_activity(user, activity)
     }
 
 
@@ -78,20 +93,16 @@ def get_activity_detail(request: HttpRequest, id: int):
 @require_GET
 def get_events(request: HttpRequest):
     user = request.user
-    activity_list = Activity.objects.filter(is_public=True)
-
     activity_info_list = []
+
+    activity_list = Activity.objects.filter(is_public=True)
     for activity in activity_list:
-        activity_info_list.append({
-            "id": activity.id,
-            "title": activity.title,
-            "content": activity.content,
-            "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
-            "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
-            # tag是活动自带tag和用户自定义tag的和
-            "tags": _get_activity_tag_list(activity, user),
-            "signed-in": _check_user_in_activity(user, activity)
-        })
+        activity_info_list.append(_get_activity_user_detail(activity, user))
+
+    # relationships = ActivityUserRelationship.objects.filter(related_user=user)
+    # for relationship in relationships:
+    #     activity_info_list.append(_get_activity_user_detail(relationship.activity, user))
+
     print(f"[debug] {activity_info_list}")
     return response({
         "events": activity_info_list,

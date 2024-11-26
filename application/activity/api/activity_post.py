@@ -177,7 +177,7 @@ def create_event(request: HttpRequest):
     end = request_data.get('end')
 
     activity = Activity(
-        is_public=True,
+        is_public=False,
         title=title,
         content=content,
         start_time=datetime.strptime(time, "%Y-%m-%d %H:%M"),
