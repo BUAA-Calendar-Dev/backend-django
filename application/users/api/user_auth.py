@@ -124,7 +124,8 @@ def user_register(request: HttpRequest):
     username = request_data.get('username', None)
     password = request_data.get('password', '')
     # 可选信息
-    email = request_data.get('email', None)
+    email = request_data.get('email', '')
+    print(f"[debug]email is {email}")
     phone = request_data.get('phone', None)
     # TODO：邀请码目前的用处不大
     join_code = request_data.get('joincode', None)
@@ -135,9 +136,7 @@ def user_register(request: HttpRequest):
     print(f"[debug]check code is {check_code}")
     if check_code == StatusCode.SUCCESS:
         # 创建新用户
-        user = User.objects.create_user(username=username, password=password)
-        if email is not None:
-            user.email = email
+        user = User.objects.create_user(username=username, password=password, email=email)
         if phone is not None:
             user.phone = phone
         user.save()

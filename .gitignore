@@ -9,3 +9,5 @@ __pycache__
 setting.json
 
 static/
+
+db.sqlite3
