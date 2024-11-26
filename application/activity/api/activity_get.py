@@ -20,7 +20,7 @@ def _get_activity_detail(activity: Activity):
         "name": activity.title,
         "content": activity.content,
         "place": activity.place,
-        "time": activity.start_time,
+        "time": activity.start_time.strftime('%Y-%m-%d %H:%M'),
     }
 
 
@@ -49,7 +49,7 @@ def get_public_activities(request: HttpRequest):
         activity_info_list.append({
             "id": activity.id,
             "name": activity.title,
-            "time": activity.start_time,
+            "time": activity.start_time.strftime('%Y-%m-%d %H:%M'),
             # tag是活动自带tag和用户自定义tag的和
             "tags": _get_activity_tag_list(activity, user),
             "signed-in": _check_user_in_activity(user, activity)
@@ -84,8 +84,10 @@ def get_events(request: HttpRequest):
     for activity in activity_list:
         activity_info_list.append({
             "id": activity.id,
-            "name": activity.title,
-            "time": activity.start_time,
+            "title": activity.title,
+            "content": activity.content,
+            "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+            "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
             # tag是活动自带tag和用户自定义tag的和
             "tags": _get_activity_tag_list(activity, user),
             "signed-in": _check_user_in_activity(user, activity)

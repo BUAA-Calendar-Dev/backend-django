@@ -44,6 +44,5 @@ def get_user_info(request: HttpRequest, id: int):
     info = _get_user_info(id)
     if info is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
-    return response({
-        "users": info
-    })
+    print(f"[debug] user_info is {info}")
+    return response(info)

@@ -21,10 +21,11 @@ def get_messages(request: HttpRequest):
             "content": message.content,
 
             "from": message.send_user.username,
-            "time": message.send_time,
+            "time": message.send_time.strftime('%Y-%m-%d %H:%M'),
             "unread": True if message.is_read else False
         })
 
+    print(f"[debug]messages: {messages}")
     return response({
         "messages": messages,
         "messages_num": len(messages)

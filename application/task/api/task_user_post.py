@@ -37,8 +37,8 @@ def creat_task(request: HttpRequest):
 
     task = Task(title=title,
                 content=content,
-                start_time=start_time,
-                end_time=end_time)
+                start_time=start_time.strftime('%Y-%m-%d %H:%M'),
+                end_time=end_time.strftime('%Y-%m-%d %H:%M'))
     if parent_task_id is not None:
         task.parent_task = Task.objects.get(parent_task_id)
     task.save()
