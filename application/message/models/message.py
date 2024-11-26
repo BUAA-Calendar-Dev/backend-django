@@ -26,7 +26,7 @@ class Message(models.Model):
                                      blank=True, null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.title)
 
     class Meta:
         db_table = 'message'
