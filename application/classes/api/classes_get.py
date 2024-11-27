@@ -80,9 +80,9 @@ def get_teachers(request: HttpRequest, id: int):
 def get_class_info_list(request: HttpRequest):
     user = User.objects.filter(id=request.user.id).first()
     if user.identity == AUTH_STUDENT:
-        classes = user.classes
+        classes = user.classes.all()
     else:
-        classes = user.owned_classes
+        classes = user.owned_classes.all()
     classes = list(classes)
 
     class_info_list = []

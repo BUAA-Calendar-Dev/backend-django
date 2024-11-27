@@ -13,7 +13,7 @@ class Class(models.Model):
     students = models.ManyToManyField(User, verbose_name="students", related_name="classes")
     teachers = models.ManyToManyField(User, verbose_name="teachers", related_name="owned_classes")
 
-    tasks = models.ManyToManyField(Task, verbose_name="tasks", related_name="shared_classes")
+    tasks = models.ManyToManyField(Task, verbose_name="tasks", related_name="shared_classes", blank=True)
 
     def __str__(self):
         return str(f"[class]{self.title}")

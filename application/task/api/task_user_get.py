@@ -43,11 +43,12 @@ def get_related_tasks(request: HttpRequest):
     for relationship in task_user_relationships:
         task = relationship.task
         tasks_list.append({
-            "task-id": task.id,
-            "task-name": relationship.name,
-            "task-content": task.content,
-            "task-time": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            "task-percentage": relationship.percentag,
+            "id": task.id,
+            "name": relationship.name,
+            "content": task.content,
+            "startTime": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "endTime": task.end_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "percentage": relationship.percentage,
             "tags": _get_task_tag_list(task, user),
             "alarms": _get_alarms(relationship)
         })

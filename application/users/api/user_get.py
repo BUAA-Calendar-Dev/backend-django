@@ -25,7 +25,6 @@ def _get_user_info(id: int):
 
 
 @response_wrapper
-@jwt_auth()
 @require_GET
 def get_current_user_info(request: HttpRequest):
     user = request.user
