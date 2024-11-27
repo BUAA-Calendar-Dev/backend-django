@@ -169,6 +169,7 @@ def remove_tag(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def create_event(request: HttpRequest):
+    user = request.user
     request_data = parse_request(request)
 
     title = request_data.get('name')
@@ -184,6 +185,9 @@ def create_event(request: HttpRequest):
         end_time=datetime.strptime(end, "%Y-%m-%d %H:%M")
     )
     activity.save()
+
+    relationship = ActivityUserRelationship(activity=activity, related_user=user, name=activity.title, permission=0)
+    relationship.save()
 
     return response({
         "message": "成功创建活动",

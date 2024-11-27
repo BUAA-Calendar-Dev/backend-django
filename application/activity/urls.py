@@ -13,7 +13,7 @@ urlpatterns = [
     path('<int:id>/tag', add_tag),
     # 删除tag
     path('<int:id>/tag/delete', remove_tag),
-    # 创建活动
+    # 创建公开活动
     path('create', create_activity),
     # 修改活动
     path('<int:id>/modify', modify_activity),
@@ -21,6 +21,8 @@ urlpatterns = [
     path('<int:id>/delete', delete_activity),
 
     # 适配event的接口
+    # 返回私人创建的活动
     path('e', get_events),
+    # 创建私人活动
     path('e/create', create_event)
 ]

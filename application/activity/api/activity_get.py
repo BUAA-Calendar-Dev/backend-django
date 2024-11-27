@@ -95,13 +95,13 @@ def get_events(request: HttpRequest):
     user = request.user
     activity_info_list = []
 
-    activity_list = Activity.objects.filter(is_public=True)
-    for activity in activity_list:
-        activity_info_list.append(_get_activity_user_detail(activity, user))
+    # activity_list = Activity.objects.filter(is_public=True)
+    # for activity in activity_list:
+    #     activity_info_list.append(_get_activity_user_detail(activity, user))
 
-    # relationships = ActivityUserRelationship.objects.filter(related_user=user)
-    # for relationship in relationships:
-    #     activity_info_list.append(_get_activity_user_detail(relationship.activity, user))
+    relationships = ActivityUserRelationship.objects.filter(related_user=user)
+    for relationship in relationships:
+        activity_info_list.append(_get_activity_user_detail(relationship.activity, user))
 
     print(f"[debug] {activity_info_list}")
     return response({
