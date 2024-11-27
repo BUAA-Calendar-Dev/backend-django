@@ -12,10 +12,10 @@ class Activity(models.Model):
     content = models.CharField(max_length=1024, default="活动描述", verbose_name="content")
     place = models.CharField(max_length=1024, default="活动地点", verbose_name="place")
 
-    start_time = models.DateTimeField(blank=False, null=False, auto_now_add=True, verbose_name="start_time")
+    start_time = models.DateTimeField(blank=False, null=False, verbose_name="start_time")
     end_time = models.DateTimeField(blank=True, null=True, verbose_name="end_time")
 
-    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tag_activities")
+    tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tag_activities", blank=True)
 
     def __str__(self):
         return str(self.title)
