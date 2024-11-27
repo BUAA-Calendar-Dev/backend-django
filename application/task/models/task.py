@@ -19,7 +19,7 @@ class Task(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name="task_tag", related_name="tag_tasks")
 
     def __str__(self):
-        return str(self.title)
+        return f"[task]{self.title}"
 
     class Meta:
         db_table = 'task'

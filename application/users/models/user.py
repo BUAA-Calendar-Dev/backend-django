@@ -41,7 +41,7 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return self.username
+        return f"[user]{self.username}"
 
     class Meta:
         ordering = ['-date_joined']

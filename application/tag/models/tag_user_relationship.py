@@ -37,7 +37,7 @@ class TagUserRelationship(models.Model):
     permission = models.IntegerField(verbose_name="permission", choices=PERMISSION_CHOICE, default=0)
 
     def __str__(self):
-        return str(self.name)
+        return f"[tag_rela]{self.name}"
 
     class Meta:
         db_table = 'tag_user_relationship'

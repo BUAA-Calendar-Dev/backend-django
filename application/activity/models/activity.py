@@ -18,7 +18,7 @@ class Activity(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name="activity_tag", related_name="tag_activities", blank=True)
 
     def __str__(self):
-        return str(self.title)
+        return f"[activity]{self.title}"
 
     class Meta:
         db_table = 'activity'

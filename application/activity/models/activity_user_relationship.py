@@ -33,7 +33,7 @@ class ActivityUserRelationship(models.Model):
                                   blank=True)
 
     def __str__(self):
-        return str(self.name)
+        return f"[activity_rela]{self.name}"
 
     class Meta:
         db_table = 'activity_user_relationship'

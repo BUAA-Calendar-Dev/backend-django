@@ -18,7 +18,7 @@ class Tag(models.Model):
                                     blank=True, null=True)
 
     def __str__(self):
-        return f"@tag-{self.title}"
+        return f"[tag]{self.title}"
 
     class Meta:
         db_table = 'tag'

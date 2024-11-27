@@ -32,9 +32,7 @@ def get_current_user_info(request: HttpRequest):
     info = _get_user_info(user.id)
     if info is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
-    return response({
-        "users": info
-    })
+    return response(info)
 
 
 @response_wrapper

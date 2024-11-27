@@ -16,7 +16,7 @@ class Class(models.Model):
     tasks = models.ManyToManyField(Task, verbose_name="tasks", related_name="shared_classes")
 
     def __str__(self):
-        return str(f"{self.title} {self.id}")
+        return str(f"[class]{self.title}")
 
     class Meta:
         db_table = 'classes'
