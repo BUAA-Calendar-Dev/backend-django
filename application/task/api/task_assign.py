@@ -33,7 +33,7 @@ def assign_to_student(request: HttpRequest, id: int):
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
-            if tag:
+            if tag is not None:
                 task.tags.add(tag)
     task.save()
 
@@ -66,7 +66,7 @@ def assign_to_class(request: HttpRequest, id: int):
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
-            if tag:
+            if tag is not None:
                 task.tags.add(tag)
     task.save()
 
@@ -94,7 +94,7 @@ def assign_to_school(request: HttpRequest, id: int):
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
-            if tag:
+            if tag is not None:
                 task.tags.add(tag)
     task.save()
 

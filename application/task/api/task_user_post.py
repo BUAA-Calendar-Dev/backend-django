@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.views.decorators.http import require_POST
 from datetime import datetime
 
+from application.classes.models import Class
 from application.tag.models import Tag
 from application.task.models import Task, TaskUserRelationship
 from application.task.models.alarm import Alarm
@@ -43,14 +44,33 @@ def creat_task(request: HttpRequest):
         task.parent_task = Task.objects.get(parent_task_id)
     task.save()
 
-    relationship = TaskUserRelationship(
-        task=task,
-        name=task.title,
-        percentage=0,
-        permission=0,
-        related_user=user
-    )
-    relationship.save()
+    class_id = request_data.get('class', '')
+    if class_id:
+        class_id = int(class_id)
+        _class = Class.objects.filter(id=class_id).first()
+        if _class is None:
+            return response({
+                "code": StatusCode.REQUEST_CLASS_ID_NOT_EXIST
+            })
+
+        for student in _class.students.all():
+            relationship = TaskUserRelationship(
+                task=task,
+                name=task.title,
+                percentage=0,
+                permission=0,
+                related_user=student
+            )
+            relationship.save()
+    else:
+        relationship = TaskUserRelationship(
+            task=task,
+            name=task.title,
+            percentage=0,
+            permission=0,
+            related_user=user
+        )
+        relationship.save()
 
     return response({
         "message": "成功创建任务"
@@ -143,7 +163,7 @@ def modify_task(request: HttpRequest, id: int):
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
-            if tag:
+            if tag is not None:
                 task.tags.add(tag)
     task.save()
 

@@ -37,26 +37,26 @@ def create_class(request: HttpRequest):
 def update_class(request: HttpRequest, id: int):
     user = request.user
     request_data = parse_request(request)
-    class_ = Class.objects.filter(id=id).first()
+    _class = Class.objects.filter(id=id).first()
 
-    if class_ is None:
+    if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
 
     title = request_data.get('title')
     if title:
         if len(title) < 256:
-            class_.title = title
+            _class.title = title
         else:
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "班级标题过长")
 
     introduction = request_data.get('introduction')
     if introduction:
         if len(introduction) < 1024:
-            class_.introduction = introduction
+            _class.introduction = introduction
         else:
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "班级描述过长")
 
-    class_.save()
+    _class.save()
     return response({
         "message": "信息"
     })
@@ -64,7 +64,9 @@ def update_class(request: HttpRequest, id: int):
 
 def _add_student(_class: Class, id: int):
     student = User.objects.filter(id=id).first()
-    if student is not None and student in _class.students.all():
+    if student is None:
+        return StatusCode.REQUEST_USER_ID_NOT_EXIST
+    elif student is not None and student in _class.students.all():
         return StatusCode.STUDENT_ALREADY_IN_CLASS
     _class.students.add(student)
     _class.save()
@@ -95,7 +97,9 @@ def add_students(request: HttpRequest, id: int):
 
 def _remove_student(_class: Class, id: int):
     student = User.objects.filter(id=id).first()
-    if student is None or student not in _class.students.all():
+    if student is None:
+        return StatusCode.STUDENT_NOT_IN_CLASS
+    if student not in _class.students.all():
         return StatusCode.STUDENT_NOT_IN_CLASS
     _class.students.remove(student)
     _class.save()
@@ -126,7 +130,9 @@ def remove_students(request: HttpRequest, id: int):
 
 def _add_teacher(_class: Class, id: int):
     teacher = User.objects.filter(id=id).first()
-    if teacher is not None and teacher in _class.teachers.all():
+    if teacher is None:
+        return StatusCode.REQUEST_USER_ID_NOT_EXIST
+    elif teacher in _class.teachers.all():
         return StatusCode.TEACHER_ALREADY_IN_CLASS
     _class.teachers.add(teacher)
     _class.save()
@@ -157,7 +163,9 @@ def add_teachers(request: HttpRequest, id: int):
 
 def _remove_teacher(_class: Class, id: int):
     teacher = User.objects.filter(id=id).first()
-    if teacher is None or teacher not in _class.teachers.all():
+    if teacher is None:
+        return StatusCode.REQUEST_USER_ID_NOT_EXIST
+    elif teacher not in _class.teachers.all():
         return StatusCode.TEACHER_NOT_IN_CLASS
     _class.teachers.remove(teacher)
     _class.save()
