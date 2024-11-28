@@ -1,6 +1,6 @@
 import os
 
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from django.views.decorators.http import require_POST
 
 from Calendar import settings
@@ -61,35 +61,49 @@ def impower_user(request: HttpRequest):
 
 
 @response_wrapper
+@jwt_auth()
 @require_POST
 def update_avatar(request):
-    user = User.objects.filter(id=request.user.id).first()
+    try:
+        user = User.objects.filter(id=request.user.id).first()
+        if not user:
+            return fail_response(ErrorCode.USER_NOT_FOUND, "用户不存在")
 
-    # 由前端指定的name获取到图片数据
-    img = request.FILES.get('img')
+        # 由前端指定的name获取到图片数据
+        img = request.FILES.get('img')
+        if not img:
+            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "没有收到文件")
 
-    # 截取文件后缀和文件名
-    img_name = img.name
-    file_name = os.path.splitext(img_name)[0]
-    file_type = os.path.splitext(img_name)[1]
-    # 重定义文件名
-    img_name = f'avatar-{file_name}{file_type}'
-    # 从配置文件中载入图片保存路径
-    img_path = os.path.join(settings.STATIC_URL, img_name)
+        # 截取文件后缀和文件名
+        img_name = img.name
+        file_name = os.path.splitext(img_name)[0]
+        file_type = os.path.splitext(img_name)[1]
+        # 重定义文件名
+        img_name = f'avatar-{file_name}{file_type}'
+        
+        # 确保static目录存在
+        static_dir = os.path.join(settings.BASE_DIR, 'static')
+        if not os.path.exists(static_dir):
+            os.makedirs(static_dir)
+            
+        # 保存到static目录
+        img_path = os.path.join(static_dir, img_name)
 
-    # 写入文件到指定地址
-    with open(img_path, 'ab') as fp:
-        # 如果上传的图片非常大，就通过chunks()方法分割成多个片段来上传
-        for chunk in img.chunks():
-            fp.write(chunk)
-    url = upload(img_path, img_name)
+        # 写入文件到指定地址
+        with open(img_path, 'wb') as fp:
+            # 如果上传的图片非常大，就通过chunks()方法分割成多个片段来上传
+            for chunk in img.chunks():
+                fp.write(chunk)
+        
+        url = upload(img_path, img_name)
+        user.avatar = url
+        user.save()
+        
+        print(f"[debug] upload avatar: {url}")
 
-    user.avatar = url
-    user.save()
-
-    print(f"[debug] upload img's url is {url}")
-
-    return response({
-        "avatar": url,
-        "message": "上传成功",
-    })
+        return response({
+            "avatar": url,
+            "message": "上传成功"
+        })
+    except Exception as e:
+        return fail_response(ErrorCode.INTERNAL_SERVER_ERROR, f"上传失败：{str(e)}")
