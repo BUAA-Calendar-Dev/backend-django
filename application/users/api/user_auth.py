@@ -175,11 +175,18 @@ def create_users(request: HttpRequest):
 
 
 @response_wrapper
+@jwt_auth()
 @require_POST
 def reset_password(request: HttpRequest, id: int):
-    request_data = parse_request(request)
     user = User.objects.filter(id=id).first()
-    password = request_data.get('password')
+    request_data = parse_request(request)
+    password = request_data.get('password', '')
+
+    if user is None:
+        return fail_response(ErrorCode.USER_NOT_FOUND, "用户不存在")
+
+    if password == '':
+        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "密码不能为空")
 
     user.password = make_password(password)
     user.save()
@@ -191,12 +198,13 @@ def reset_password(request: HttpRequest, id: int):
 
 # 修改密码
 @response_wrapper
+@jwt_auth()
 @require_POST
 def change_password(request: HttpRequest):
     user = request.user
     request_data = parse_request(request)
-    old_password = request_data.get('old-password')
-    new_password = request_data.get('new-password')
+    old_password = request_data.get('old-password', '')
+    new_password = request_data.get('new-password', '')
 
     # 验证用户名和密码
     user = authenticate(username=user.username, password=old_password)
@@ -213,6 +221,7 @@ def change_password(request: HttpRequest):
 # 忘记密码：修改密码的翻版
 # TODO：对邮件的支持
 @response_wrapper
+@jwt_auth()
 @require_POST
 def forget_password(request: HttpRequest):
     request_data = parse_request(request)

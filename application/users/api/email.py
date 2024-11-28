@@ -8,6 +8,8 @@ from django.core.cache import cache
 from django.core.mail import send_mail
 from django.views.decorators.http import require_POST
 
+from application.users.api.auth import jwt_auth
+
 from ..models import User
 from ...utils.response import *
 
@@ -36,6 +38,7 @@ def send_captcha(request):
 
 
 @response_wrapper
+@jwt_auth
 @require_POST
 def change_email(request):
     body = json.loads(request.body.decode('utf-8'))
