@@ -15,7 +15,7 @@ def _get_user_info(id: int):
     return {
         "username": user.username,
         "auth": user.identity,
-
+        "name": user.name,
         "gender": user.gender,
         "avatar": user.avatar,
         "email": user.email,

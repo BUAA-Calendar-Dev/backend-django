@@ -19,23 +19,23 @@ def modify_user_info(request: HttpRequest):
     user = request.user
 
     request_data = parse_request(request)
-    username = request_data.get('username', None)
-    motto = request_data.get('motto', None)
-    phone = request_data.get('phone', None)
-
-    # 检查用户名是否已存在
-    if username and User.objects.filter(username=username).exists():
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, '用户名已存在')
-    elif username in name_not_allow:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, '非法取名')
-    elif username:
-        user.username = username
+    name = request_data.get('name', '')
+    motto = request_data.get('motto', '')
+    phone = request_data.get('phone', '')
+    gender = request_data.get('gender', '')
+    email = request_data.get('email', '')
 
     # 检查个性签名是否为空
-    if motto is not None:
+    if name:
+        user.name = name
+    if motto:
         user.motto = motto
-    if phone is not None:
+    if phone:
         user.phone = phone
+    if gender:
+        user.gender = gender
+    if email:
+        user.email = email
 
     # 更新用户
     user.save()

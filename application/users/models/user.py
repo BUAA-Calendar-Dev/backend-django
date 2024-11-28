@@ -14,6 +14,8 @@ class User(AbstractUser):
     # 用户是否已经被删除
     isDelete = models.BooleanField(default=False)
 
+    # 用户名
+    name = models.CharField(max_length=32, default="默认昵称", verbose_name="name")
     # 性别
     gender = models.CharField(choices=GENDER_CHOICE, max_length=32, default="保密", verbose_name="gender")
     # 头像
