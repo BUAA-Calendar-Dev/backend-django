@@ -16,7 +16,7 @@ class Task(models.Model):
     # TODO：考虑嵌套层次的限制
     parent_task = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='son_task')
 
-    tags = models.ManyToManyField(Tag, verbose_name="task_tag", related_name="tag_tasks")
+    tags = models.ManyToManyField(Tag, verbose_name="task_tag", related_name="tag_tasks", blank=True)
 
     def __str__(self):
         return f"[task]{self.title}"

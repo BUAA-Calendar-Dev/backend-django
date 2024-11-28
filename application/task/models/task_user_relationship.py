@@ -23,7 +23,7 @@ class TaskUserRelationship(models.Model):
                                      on_delete=models.CASCADE,
                                      blank=True, null=True)
     # ddl提醒
-    alarms = models.ManyToManyField(Alarm, verbose_name="alarms")
+    alarms = models.ManyToManyField(Alarm, verbose_name="alarms", blank=True)
     # 任务别名
     name = models.CharField(max_length=256, default="任务名", verbose_name="aliasName")
     # 完成情况

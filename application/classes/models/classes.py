@@ -10,8 +10,8 @@ class Class(models.Model):
     title = models.CharField(max_length=256, default="班级", verbose_name="title")
     introduction = models.CharField(max_length=1024, default="暂时还没有班级介绍", verbose_name="introduction")
 
-    students = models.ManyToManyField(User, verbose_name="students", related_name="classes")
-    teachers = models.ManyToManyField(User, verbose_name="teachers", related_name="owned_classes")
+    students = models.ManyToManyField(User, verbose_name="students", related_name="classes", blank=True)
+    teachers = models.ManyToManyField(User, verbose_name="teachers", related_name="owned_classes", blank=True)
 
     tasks = models.ManyToManyField(Task, verbose_name="tasks", related_name="shared_classes", blank=True)
 
