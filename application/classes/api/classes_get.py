@@ -81,8 +81,10 @@ def get_class_info_list(request: HttpRequest):
     user = User.objects.filter(id=request.user.id).first()
     if user.identity == AUTH_STUDENT:
         classes = user.classes.all()
-    else:
+    elif user.identity == AUTH_TEACHER:
         classes = user.owned_classes.all()
+    else:
+        return Class.objects.all()
     classes = list(classes)
 
     class_info_list = []
