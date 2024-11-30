@@ -14,6 +14,7 @@ def _get_user_info(id: int):
     if user is None:
         return None
     return {
+        "id": user.id,
         "username": user.username,
         "auth": user.identity,
         "name": user.name,
