@@ -8,7 +8,8 @@ urlpatterns = [
     # 查询活动详细内容
     path('<int:id>/detail', get_activity_detail),
     # 参退活动
-    path('<int:id>/<str:status>', user_inout_activity),
+    path('<int:id>/join', user_join_activity),
+    path('<int:id>/exit', user_exit_activity),
     # 添加tag
     path('<int:id>/tag', add_tag),
     # 删除tag

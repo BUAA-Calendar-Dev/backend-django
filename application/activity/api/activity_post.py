@@ -84,7 +84,7 @@ def delete_activity(request: HttpRequest, id: int):
 @response_wrapper
 @jwt_auth()
 @require_POST
-def user_inout_activity(request: HttpRequest, id: int, status: str):
+def user_join_activity(request: HttpRequest, id: int):
     user = request.user
     activity = Activity.objects.filter(id=id).first()
 
@@ -93,30 +93,46 @@ def user_inout_activity(request: HttpRequest, id: int, status: str):
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
         })
 
-    exists = ActivityUserRelationship.objects.filter(task=activity, related_user=user).exists()
-    if status == "join":
-        if exists:
-            return response({
-                "code": StatusCode.PARTICIPATE_IN_ACTIVITY_AGAIN
-            })
-        relationship = ActivityUserRelationship(
-            task=activity,
-            related_user=user,
-            permission=1,
-            name=activity.title
-        )
-        relationship.save()
-    elif status == "exit":
-        if not exists:
-            return response({
-                "code": StatusCode.EXIT_ACTIVITY_NOT_IN
-            })
-        relationship = ActivityUserRelationship.objects.filter(task=activity, related_user=user).first()
-        relationship.delete()
-    else:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "无效的状态")
+    relationship_exits = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).exists()
+    if relationship_exits:
+        return response({
+            "code": StatusCode.PARTICIPATE_IN_ACTIVITY_AGAIN
+        })
+    relationship = ActivityUserRelationship(
+        task=activity,
+        related_user=user,
+        permission=1,
+        name=activity.title
+    )
+    relationship.save()
+
     return response({
-        "message": f"成功改变用户的{status}"
+        "message": f"成功参加活动"
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_POST
+def user_exit_activity(request: HttpRequest, id: int):
+    user = request.user
+    activity = Activity.objects.filter(id=id).first()
+
+    if activity is None:
+        return response({
+            "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
+        })
+
+    relationship_exists = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).exists()
+    if not relationship_exists:
+        return response({
+            "code": StatusCode.EXIT_ACTIVITY_NOT_IN
+        })
+    relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
+    relationship.delete()
+    
+    return response({
+        "message": f"成功退出活动"
     })
 
 
@@ -132,7 +148,7 @@ def add_tag(request: HttpRequest, id: int):
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
         })
-    relationship = ActivityUserRelationship.objects.filter(task=activity, related_user=user).first()
+    relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
 
     tag_id = request_data.get('tag-id')
     tag = Tag.objects.filter(id=tag_id).first()
@@ -157,7 +173,7 @@ def remove_tag(request: HttpRequest, id: int):
         return response({
             "code": StatusCode.REQUEST_ACTIVITY_ID_NOT_EXIST
         })
-    relationship = ActivityUserRelationship.objects.filter(task=activity, related_user=user).first()
+    relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
 
     tag_id = request_data.get('tag-id')
     tag = Tag.objects.filter(id=tag_id).first()

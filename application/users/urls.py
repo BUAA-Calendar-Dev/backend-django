@@ -4,6 +4,7 @@ from .api import *
 
 urlpatterns = [
     path('login', user_login),
+    path('logout', user_logout),
     path('register', user_register),
 
     # 批量创建用户

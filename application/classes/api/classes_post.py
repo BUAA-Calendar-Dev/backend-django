@@ -58,7 +58,7 @@ def update_class(request: HttpRequest, id: int):
 
     _class.save()
     return response({
-        "message": "信息"
+        "message": "成功修改班级信息"
     })
 
 
