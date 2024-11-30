@@ -120,7 +120,7 @@ def response(data: dict) -> dict:
         data["code"] = 0
 
     if "status" in data:
-        data["status"] = [status.value for status in data["status"]]
+        data["status"] = [{"code": status["code"].value} for status in data["status"]]
 
     return _api_response(True, data)
 
