@@ -118,6 +118,10 @@ def response(data: dict) -> dict:
         data["code"] = [code.value for code in data["code"]]
     else:
         data["code"] = 0
+
+    if "status" in data:
+        data["status"] = [status.value for status in data["status"]]
+
     return _api_response(True, data)
 
 
