@@ -3,6 +3,7 @@ from django.views.decorators.http import require_GET
 
 from application.users.api import jwt_auth
 from application.users.models import User
+from application.users.models.user_value import *
 from application.utils.response import *
 
 
@@ -43,3 +44,21 @@ def get_user_info(request: HttpRequest, id: int):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
     print(f"[debug] user_info is {info}")
     return response(info)
+
+@response_wrapper
+@jwt_auth()
+@require_GET
+def get_students(request: HttpRequest):
+    students = User.objects.filter(identity=AUTH_STUDENT).all()
+    return response({
+        "students": [_get_user_info(student.id) for student in students]
+    })
+
+@response_wrapper
+@jwt_auth()
+@require_GET
+def get_teachers(request: HttpRequest):
+    teachers = User.objects.filter(identity=AUTH_TEACHER).all()
+    return response({
+        "teachers": [_get_user_info(teacher.id) for teacher in teachers]
+    })
