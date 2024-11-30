@@ -82,6 +82,8 @@ def assign_to_class(request: HttpRequest, id: int):
                 task.tags.add(tag)
     task.save()
 
+    _class.tasks.add(task)
+    _class.save()
     for student in _class.students.all():
         relationship = TaskUserRelationship(task=task, related_user=student, name=task.title, permission=1)
         relationship.save()

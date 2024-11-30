@@ -2,6 +2,7 @@ from django.http import HttpRequest
 from django.views.decorators.http import require_POST, require_GET
 
 from application.classes.models import Class
+from application.task.models.task import Task
 from application.users.api import jwt_auth
 from application.users.api.user_get import _get_user_info
 from application.users.models import User
@@ -18,10 +19,22 @@ def _get_class_info(_class: Class):
     return {
         "id": _class.id,
         "name": _class.title,
+        "introduction": _class.introduction,
         # 学生人数
         "count": len(list(_class.students.all())),
         # 教师列表
         "teacher": _get_user_name_list(list(_class.teachers.all()))
+    }
+
+
+def _get_task_info(task: Task):
+    return {
+        "id": task.id,
+        "title": task.title,
+        "content": task.content,
+        "start": task.start_time,
+        "end": task.end_time,
+        "tags": [tag.name for tag in task.tags.all()]
     }
 
 
@@ -40,8 +53,6 @@ def get_class_info(request: HttpRequest, id: int):
 @jwt_auth()
 @require_GET
 def get_students(request: HttpRequest, id: int):
-    user = request.user
-    request_data = parse_request(request)
     class_ = Class.objects.filter(id=id).first()
     if class_ is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
@@ -96,4 +107,18 @@ def get_class_info_list(request: HttpRequest):
 
     return response({
         "class": class_info_list
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_GET
+def get_tasks(request: HttpRequest, id: int):
+    _class = Class.objects.filter(id=id).first()
+    if _class is None:
+        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该课程")
+
+    tasks = _class.tasks.all()
+    return response({
+        "tasks": [_get_task_info(task) for task in tasks.all()]
     })

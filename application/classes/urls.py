@@ -14,5 +14,13 @@ urlpatterns = [
     # 批量移除学生
     path('<int:id>/student/delete', remove_students),
     # 查询自己的班级
-    path('info', get_class_info_list)
+    path('info', get_class_info_list),
+    # 查询班级信息
+    path('<int:id>', get_class_info),
+    # 查询班级学生
+    path('<int:id>/student', get_students),
+    # 查询班级老师
+    path('<int:id>/teacher', get_teachers),
+    # 查询班级任务
+    path('<int:id>/task', get_tasks),
 ]
