@@ -112,8 +112,12 @@ def response(data: dict) -> dict:
     """
     if "code" not in data:
         data["code"] = 0
-    if not isinstance(data["code"], int):
+    if isinstance(data["code"], StatusCode):
         data["code"] = data["code"].value
+    elif isinstance(data["code"], list):
+        data["code"] = [code.value for code in data["code"]]
+    else:
+        data["code"] = 0
     return _api_response(True, data)
 
 

@@ -123,7 +123,7 @@ def remove_students(request: HttpRequest, id: int):
         status = _remove_student(_class, student_id)
         status_list.append({"code": status})
     return response({
-        "message": "成功批量添加学生",
+        "message": "成功批量移除学生",
         "status": status_list
     })
 
@@ -189,6 +189,6 @@ def remove_teachers(request: HttpRequest, id: int):
         status = _remove_teacher(_class, teacher_id)
         status_list.append({"code": status})
     return response({
-        "message": "成功批量添加老师",
+        "message": "成功批量移除老师",
         "status": status_list
     })
