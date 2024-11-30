@@ -7,13 +7,6 @@ from application.users.models import User
 from application.utils.response import *
 
 
-def sort_by_time(tasks_list: list):
-    return sorted(tasks_list,
-                  key=lambda x: x['end']
-                  if (x['end'] and x['"task-time"'] != x['end'])
-                  else '0000-12-31 23:59:59', reverse=True)
-
-
 def _get_task_tag_list(task: Task, user: User):
     tag_list = set()
     relationship = TaskUserRelationship.objects.filter(related_user=user, task=task).first()

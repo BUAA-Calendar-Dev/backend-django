@@ -150,14 +150,17 @@ def modify_task(request: HttpRequest, id: int):
         })
 
     title = request_data.get('title', '')
-    time = request_data.get('time', '')
+    start_time = request_data.get('start', '')
+    end_time = request_data.get('end', '')
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
     if title:
         task.title = title
-    if time:
-        task.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
+    if start_time:
+        task.start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M")
+    if end_time:
+        task.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M")
     if content:
         task.content = content
     if tags:

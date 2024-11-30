@@ -23,7 +23,9 @@ urlpatterns = [
     path('modify', modify_user_info),
     # 修改头像
     path('avatar', update_avatar),
-    
+
+    # 获取学生列表
     path('students', get_students),
+    # 获取教师列表
     path('teachers', get_teachers),
 ]

@@ -18,13 +18,15 @@ def create_activity(request: HttpRequest):
 
     title = request_data.get('name')
     content = request_data.get('content')
-    time = request_data.get('time')
+    start_time = request_data.get('start')
+    end_time = request_data.get('end')
 
     activity = Activity(
         is_public=True,
         title=title,
         content=content,
-        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M")
+        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M")
     )
     activity.save()
 
@@ -46,14 +48,17 @@ def modify_activity(request: HttpRequest, id: int):
 
     title = request_data.get('name', '')
     content = request_data.get('content', '')
-    time = request_data.get('time', '')
+    start_time = request_data.get('start', '')
+    end_time = request_data.get('end', '')
 
     if title:
         activity.title = title
     if content:
         activity.content = content
-    if time:
-        activity.start_time = datetime.strptime(time, "%Y-%m-%d %H:%M")
+    if start_time:
+        activity.start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M")
+    if end_time:
+        activity.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M")
     activity.save()
 
     return response({
@@ -174,15 +179,15 @@ def create_event(request: HttpRequest):
 
     title = request_data.get('name')
     content = request_data.get('content')
-    time = request_data.get('start')
-    end = request_data.get('end')
+    start_time = request_data.get('start')
+    end_time = request_data.get('end')
 
     activity = Activity(
         is_public=False,
         title=title,
         content=content,
-        start_time=datetime.strptime(time, "%Y-%m-%d %H:%M"),
-        end_time=datetime.strptime(end, "%Y-%m-%d %H:%M")
+        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M")
     )
     activity.save()
 

@@ -64,7 +64,8 @@ def get_public_activities(request: HttpRequest):
         activity_info_list.append({
             "id": activity.id,
             "name": activity.title,
-            "time": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+            "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
+            "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
             # tag是活动自带tag和用户自定义tag的和
             "tags": _get_activity_tag_list(activity, user),
             "signed-in": _check_user_in_activity(user, activity)

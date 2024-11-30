@@ -25,11 +25,17 @@ def assign_to_student(request: HttpRequest, id: int):
         })
 
     title = request_data.get('title', '')
-    time = request_data.get('time', '')
+    start_time = request_data.get('start', '')
+    end_time = request_data.get('end', '')
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H"), content=content)
+    task = Task(
+        title=title,
+        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        content=content
+    )
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
@@ -58,11 +64,17 @@ def assign_to_class(request: HttpRequest, id: int):
         })
 
     title = request_data.get('title', '')
-    time = request_data.get('time', '')
+    start_time = request_data.get('start', '')
+    end_time = request_data.get('end', '')
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M"), content=content)
+    task = Task(
+        title=title,
+        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        content=content
+    )
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
@@ -83,14 +95,19 @@ def assign_to_class(request: HttpRequest, id: int):
 @require_POST
 def assign_to_school(request: HttpRequest, id: int):
     request_data = parse_request(request)
-    user = request.user
 
     title = request_data.get('title', '')
-    time = request_data.get('time', '')
+    start_time = request_data.get('start', '')
+    end_time = request_data.get('end', '')
     content = request_data.get('content', '')
     tags = request_data.get('tags', [])
 
-    task = Task(title=title, time=datetime.strptime(time, "%Y-%m-%d %H:%M"), content=content)
+    task = Task(
+        title=title,
+        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
+        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        content=content
+    )
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
