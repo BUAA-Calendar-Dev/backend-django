@@ -9,7 +9,7 @@ from application.utils.response import *
 
 def _get_user_info(id: int):
     user = User.objects.filter(id=id).first()
-    print(f"[debug]user is {user}")
+    # print(f"[debug]user is {user}")
 
     if user is None:
         return None
@@ -43,7 +43,7 @@ def get_user_info(request: HttpRequest, id: int):
     info = _get_user_info(id)
     if info is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在用户")
-    print(f"[debug] user_info is {info}")
+    # print(f"[debug] user_info is {info}")
     return response(info)
 
 @response_wrapper

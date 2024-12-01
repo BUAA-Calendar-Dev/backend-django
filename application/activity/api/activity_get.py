@@ -3,14 +3,15 @@ from django.views.decorators.http import require_GET
 
 from application.activity.models import Activity
 from application.activity.models.activity_user_relationship import ActivityUserRelationship
+from application.task.models.task import Task
+from application.task.models.task_user_relationship import TaskUserRelationship
 from application.users.api import jwt_auth
 from application.users.models import User
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
-def _check_user_in_activity(user: User, activity: Activity):
-    relationship = ActivityUserRelationship.objects.filter(related_user=user, activity=activity).first()
+def _check_user_in_activity(user: User, relationship: ActivityUserRelationship):
     return relationship is not None
 
 
@@ -25,17 +26,26 @@ def _get_activity_detail(activity: Activity):
     }
 
 
-def _get_activity_user_detail(activity: Activity, user: User):
+def _get_special_hours(relationship: TaskUserRelationship):
     return {
-        "id": activity.id,
-        "title": activity.title,
-        "content": activity.content,
-        "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
-        "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
-        "place": activity.place,
+        "id": relationship.task.id,
+        "class": relationship.name,
+        "label": relationship.task.content,
+        "start": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
+        "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M')
+    }
+
+def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):
+    return {
+        "id": relationship.activity.id,
+        "title": relationship.name,
+        "content": relationship.activity.content,
+        "start": relationship.activity.start_time.strftime('%Y-%m-%d %H:%M'),
+        "end": relationship.activity.end_time.strftime('%Y-%m-%d %H:%M'),
+        "place": relationship.activity.place,
         # tag是活动自带tag和用户自定义tag的和
-        "tags": _get_activity_tag_list(activity, user),
-        "signed-in": _check_user_in_activity(user, activity)
+        "tags": _get_activity_tag_list(relationship.activity, user),
+        "signed-in": relationship is not None
     }
 
 
@@ -95,17 +105,24 @@ def get_activity_detail(request: HttpRequest, id: int):
 def get_events(request: HttpRequest):
     user = request.user
     activity_info_list = []
+    task_info_list = []
 
     # activity_list = Activity.objects.filter(is_public=True)
     # for activity in activity_list:
     #     activity_info_list.append(_get_activity_user_detail(activity, user))
 
-    relationships = ActivityUserRelationship.objects.filter(related_user=user)
-    for relationship in relationships:
-        activity_info_list.append(_get_activity_user_detail(relationship.activity, user))
+    activity_relationships = ActivityUserRelationship.objects.filter(related_user=user)
+    for relationship in activity_relationships:
+        activity_info_list.append(_get_activity_user_detail(relationship, user))
+        
+    task_relationships = TaskUserRelationship.objects.filter(related_user=user)
+    for relationship in task_relationships:
+        task_info_list.append(_get_special_hours(relationship))
+        
+    print(f"[debug] activity_info_list is {activity_info_list}")
+    print(f"[debug] task_info_list is {task_info_list}")
 
-    print(f"[debug] {activity_info_list}")
     return response({
         "events": activity_info_list,
-        "specialHours": []
+        "specialHours": task_info_list
     })

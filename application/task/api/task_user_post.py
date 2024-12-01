@@ -30,6 +30,7 @@ def creat_task(request: HttpRequest):
 
     start_time = request_data.get('start', None)
     end_time = request_data.get('end', None)
+
     # TODO：目前设置如果没有DDL，则结束和创建时间相等
     start_time = timezone.now() if start_time is None else start_time
     end_time = start_time if end_time is None else end_time
@@ -58,7 +59,7 @@ def creat_task(request: HttpRequest):
                 task=task,
                 name=task.title,
                 percentage=0,
-                permission=0,
+                permission=1,
                 related_user=student
             )
             relationship.save()
@@ -98,10 +99,40 @@ def set_percentage(request: HttpRequest, id: int):
 
     percentage = request_data.get('percentage')
     relationship.percentage = percentage
+    if percentage == 100:
+        relationship.is_finished = True
     relationship.save()
 
     return response({
         "message": "成功修改完成度"
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_POST
+def finish_task(request: HttpRequest, id: int):
+    request_data = parse_request(request)
+    user = request.user
+
+    task = Task.objects.filter(id=id).first()
+    if task is None:
+        return response({
+            "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
+        })
+
+    relationship = TaskUserRelationship.objects.filter(related_user=user, task=task).first()
+    if relationship is None:
+        return response({
+            "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
+        })
+
+    relationship.percentage = 100
+    relationship.is_finished = True
+    relationship.save()
+
+    return response({
+        "message": "成功完成任务"
     })
 
 

@@ -27,7 +27,9 @@ class TaskUserRelationship(models.Model):
     # 任务别名
     name = models.CharField(max_length=256, default="任务名", verbose_name="aliasName")
     # 完成情况
-    percentage = models.FloatField(verbose_name="finish_percentage", default=0)
+    percentage = models.IntegerField(verbose_name="finish_percentage", default=0)
+    # 是否完成
+    is_finished = models.BooleanField(verbose_name="is_finished", default=False)
     # 权限管理
     permission = models.IntegerField(verbose_name="permission", choices=PERMISSION_CHOICE, default=0)
     # 自定义私有tag

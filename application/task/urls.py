@@ -7,6 +7,7 @@ urlpatterns = [
     path('info', get_related_tasks),
     # 设置任务完成百分比
     path('<int:id>/percentage', set_percentage),
+    path('<int:id>/finish', finish_task),
     # 设置任务提醒
     path('<int:id>/alarm', set_alarms),
     # 绑定tag
