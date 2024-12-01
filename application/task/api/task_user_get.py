@@ -39,8 +39,8 @@ def get_related_tasks(request: HttpRequest):
             "id": task.id,
             "name": relationship.name,
             "content": task.content,
-            "startTime": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
-            "endTime": task.end_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "start": task.start_time.strftime('%Y-%m-%d %H:%M:%S'),
+            "end": task.end_time.strftime('%Y-%m-%d %H:%M:%S'),
             "percentage": relationship.percentage,
             "tags": _get_task_tag_list(task, user),
             "alarms": _get_alarms(relationship)

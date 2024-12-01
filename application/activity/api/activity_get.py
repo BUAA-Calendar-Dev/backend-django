@@ -27,12 +27,29 @@ def _get_activity_detail(activity: Activity):
 
 
 def _get_special_hours(relationship: TaskUserRelationship):
+    start_date = relationship.task.start_time.date()
+    start_hour = relationship.task.start_time.hour
+    end_hour = relationship.task.end_time.hour
+  
     return {
         "id": relationship.task.id,
         "class": relationship.name,
         "label": relationship.task.content,
+        "from": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
+        "to": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
+        "title": relationship.task.title,
+        "content": relationship.task.content,
         "start": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
-        "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M')
+        "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
+        
+        "completed": relationship.percentage == 100,
+        
+        "day": start_date.weekday(),
+        "hours": [start_hour, end_hour],
+        "style": {
+            "backgroundColor": "#FFC0CB",  # 粉红色背景，可以根据需要自定义
+            "opacity": 0.5  # 透明度
+        },
     }
 
 def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):

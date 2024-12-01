@@ -1,5 +1,6 @@
 from django.http import HttpRequest
 from django.views.decorators.http import require_POST
+from django.utils import timezone
 from datetime import datetime
 
 from application.classes.models import Class
@@ -16,6 +17,7 @@ from application.utils.response import *
 @jwt_auth()
 @require_POST
 def assign_to_student(request: HttpRequest, id: int):
+    user = request.user
     request_data = parse_request(request)
 
     student = User.objects.filter(id=id).first()
@@ -32,8 +34,8 @@ def assign_to_student(request: HttpRequest, id: int):
 
     task = Task(
         title=title,
-        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
-        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        start_time=timezone.make_aware(datetime.strptime(start_time, "%Y-%m-%d %H:%M")),
+        end_time=timezone.make_aware(datetime.strptime(end_time, "%Y-%m-%d %H:%M")),
         content=content
     )
     if tags:
@@ -42,6 +44,8 @@ def assign_to_student(request: HttpRequest, id: int):
             if tag is not None:
                 task.tags.add(tag)
     task.save()
+
+    TaskUserRelationship(task=task, related_user =user, name=task.title, permission=0).save()
 
     relationship = TaskUserRelationship(task=task, related_user=student, name=task.title, permission=1)
     relationship.save()
@@ -55,6 +59,7 @@ def assign_to_student(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def assign_to_class(request: HttpRequest, id: int):
+    user = request.user
     request_data = parse_request(request)
 
     _class = Class.objects.filter(id=id).first()
@@ -71,8 +76,8 @@ def assign_to_class(request: HttpRequest, id: int):
 
     task = Task(
         title=title,
-        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
-        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        start_time=timezone.make_aware(datetime.strptime(start_time, "%Y-%m-%d %H:%M")),
+        end_time=timezone.make_aware(datetime.strptime(end_time, "%Y-%m-%d %H:%M")),
         content=content
     )
     if tags:
@@ -82,11 +87,14 @@ def assign_to_class(request: HttpRequest, id: int):
                 task.tags.add(tag)
     task.save()
 
+    TaskUserRelationship(task=task, related_user =user, name=task.title, permission=0).save()
+
     _class.tasks.add(task)
     _class.save()
     for student in _class.students.all():
         relationship = TaskUserRelationship(task=task, related_user=student, name=task.title, permission=1)
         relationship.save()
+        print(f"[debug] class-task assign to {student.username}")
     return response({
         "message": "成功向班级布置任务"
     })
@@ -96,6 +104,7 @@ def assign_to_class(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def assign_to_school(request: HttpRequest, id: int):
+    user = request.user
     request_data = parse_request(request)
 
     title = request_data.get('title', '')
@@ -106,8 +115,8 @@ def assign_to_school(request: HttpRequest, id: int):
 
     task = Task(
         title=title,
-        start_time=datetime.strptime(start_time, "%Y-%m-%d %H:%M"),
-        end_time=datetime.strptime(end_time, "%Y-%m-%d %H:%M"),
+        start_time=timezone.make_aware(datetime.strptime(start_time, "%Y-%m-%d %H:%M")),
+        end_time=timezone.make_aware(datetime.strptime(end_time, "%Y-%m-%d %H:%M")),
         content=content
     )
     if tags:
@@ -116,6 +125,8 @@ def assign_to_school(request: HttpRequest, id: int):
             if tag is not None:
                 task.tags.add(tag)
     task.save()
+
+    TaskUserRelationship(task=task, related_user =user, name=task.title, permission=0).save()
 
     for student in User.objects.filter(identity=AUTH_STUDENT):
         if not TaskUserRelationship.objects.filter(task=task, related_user=student).exists():
