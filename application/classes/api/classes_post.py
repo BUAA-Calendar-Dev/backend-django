@@ -42,19 +42,11 @@ def update_class(request: HttpRequest, id: int):
     if _class is None:
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "不存在该班级")
 
-    title = request_data.get('title')
-    if title:
-        if len(title) < 256:
-            _class.title = title
-        else:
-            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "班级标题过长")
+    title = request_data.get('title', '')
+    _class.title = title
 
-    introduction = request_data.get('introduction')
-    if introduction:
-        if len(introduction) < 1024:
-            _class.introduction = introduction
-        else:
-            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "班级描述过长")
+    introduction = request_data.get('introduction', '')
+    _class.introduction = introduction
 
     _class.save()
     return response({

@@ -20,9 +20,11 @@ urlpatterns = [
     path("api/message/", include('application.message.urls')),
     # 标签
     path("api/tag/", include('application.tag.urls')),
+    # 评论
+    path('api/comment/', include('application.comment.urls')),
 
     # 适配event的接口
-    path("api/event/", include('application.activity.urls'))
+    path("api/event/", include('application.activity.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

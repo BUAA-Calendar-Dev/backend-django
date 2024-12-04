@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "application.tag",
     "application.task",
     "application.users",
+    "application.comment",
     "corsheaders",  # 注册 corsheaders
 ]
 

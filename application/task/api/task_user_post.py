@@ -25,8 +25,6 @@ def creat_task(request: HttpRequest):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "标题过长")
 
     content = request_data.get('content', '暂无任务描述')
-    if len(content) > 1024:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "内容过长")
 
     start_time = request_data.get('start', None)
     end_time = request_data.get('end', None)

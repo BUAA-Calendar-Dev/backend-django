@@ -25,5 +25,10 @@ urlpatterns = [
     # 返回私人创建的活动
     path('e', get_events),
     # 创建私人活动
-    path('e/create', create_event)
+    path('e/create', create_event),
+    
+    # 获取评论
+    path('<int:id>/comments', get_comments),
+    # 创建一级评论
+    path('<int:id>/comment', create_comment),
 ]

@@ -19,8 +19,6 @@ def creat_tag(request: HttpRequest):
         return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "tag名过长")
 
     content = request_data.get('content', 'tag-content')
-    if len(content) > 1024:
-        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "描述过长")
 
     color = request_data.get('color', '#FFEFDB')
 
@@ -53,11 +51,7 @@ def modify_tag(request: HttpRequest, id: int):
             return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "tag名过长")
 
     content = request_data.get('content', '')
-    if content:
-        if len(content) < 1024:
-            tag.content = content
-        else:
-            return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "描述过长")
+    tag.content = content
 
     color = request_data.get('color', '')
     if color:

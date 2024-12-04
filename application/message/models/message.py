@@ -6,8 +6,8 @@ from application.users.models import User
 class Message(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
 
-    title = models.CharField(max_length=256, default="email", verbose_name="title")
-    content = models.CharField(max_length=4096, default="信息内容", verbose_name="content")
+    title = models.CharField(max_length=1024, default="email", verbose_name="title")
+    content = models.TextField(default="信息内容", verbose_name="content")
 
     send_time = models.DateTimeField(blank=False, null=False, verbose_name="send_time",
                                      auto_now_add=True)
