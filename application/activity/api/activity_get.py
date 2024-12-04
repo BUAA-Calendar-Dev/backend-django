@@ -26,30 +26,15 @@ def _get_activity_detail(activity: Activity):
     }
 
 
-def _get_special_hours(relationship: TaskUserRelationship):
-    start_date = relationship.task.start_time.date()
-    start_hour = relationship.task.start_time.hour
-    end_hour = relationship.task.end_time.hour
-  
+def _get_task_event(relationship: TaskUserRelationship):
     return {
         "id": relationship.task.id,
-        "class": relationship.name,
-        "label": relationship.task.content,
-        "from": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
-        "to": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
-        "title": relationship.task.title,
+        "title": relationship.name,
         "content": relationship.task.content,
         "start": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
         "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
-        
         "completed": relationship.percentage == 100,
-        
-        "day": start_date.weekday(),
-        "hours": [start_hour, end_hour],
-        "style": {
-            "backgroundColor": "#FFC0CB",  # 粉红色背景，可以根据需要自定义
-            "opacity": 0.5  # 透明度
-        },
+        "is_task": True
     }
 
 def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):
@@ -62,7 +47,8 @@ def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User
         "place": relationship.activity.place,
         # tag是活动自带tag和用户自定义tag的和
         "tags": _get_activity_tag_list(relationship.activity, user),
-        "signed-in": relationship is not None
+        "signed-in": relationship is not None,
+        "is_task": False
     }
 
 
@@ -134,12 +120,11 @@ def get_events(request: HttpRequest):
         
     task_relationships = TaskUserRelationship.objects.filter(related_user=user)
     for relationship in task_relationships:
-        task_info_list.append(_get_special_hours(relationship))
+        task_info_list.append(_get_task_event(relationship))
         
     print(f"[debug] activity_info_list is {activity_info_list}")
     print(f"[debug] task_info_list is {task_info_list}")
 
     return response({
-        "events": activity_info_list,
-        "specialHours": task_info_list
+        "events": activity_info_list + task_info_list
     })

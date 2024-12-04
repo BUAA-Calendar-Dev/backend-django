@@ -20,7 +20,7 @@ def get_messages(request: HttpRequest):
             "title": message.title,
             "content": message.content,
 
-            "from": message.send_user.username,
+            "from": message.send_user.name,
             "time": message.send_time.strftime('%Y-%m-%d %H:%M'),
             "unread": False if message.is_read else True
         })
