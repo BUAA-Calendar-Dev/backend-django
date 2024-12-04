@@ -9,7 +9,7 @@ from application.utils.response import *
 
 def _get_user_info(id: int):
     user = User.objects.filter(id=id).first()
-    # print(f"[debug]user is {user}")
+  # print(f"[debug]user is {user}")
 
     if user is None:
         return None
