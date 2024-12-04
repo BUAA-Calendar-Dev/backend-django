@@ -29,7 +29,8 @@ def _get_alarms(relationship: TaskUserRelationship):
 @require_GET
 def get_related_tasks(request: HttpRequest):
     user = request.user
-    task_user_relationships = list(TaskUserRelationship.objects.filter(related_user=user))
+    # 获取关系并按任务结束时间倒序排序
+    task_user_relationships = list(TaskUserRelationship.objects.filter(related_user=user).order_by('-task__end_time'))
     print(f"[debug]find {len(task_user_relationships)} relas")
 
     tasks_list = []
