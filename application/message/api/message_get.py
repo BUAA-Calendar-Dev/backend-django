@@ -22,7 +22,7 @@ def get_messages(request: HttpRequest):
 
             "from": message.send_user.username,
             "time": message.send_time.strftime('%Y-%m-%d %H:%M'),
-            "unread": True if message.is_read else False
+            "unread": False if message.is_read else True
         })
 
     print(f"[debug]messages: {messages}")
