@@ -99,7 +99,7 @@ def user_join_activity(request: HttpRequest, id: int):
             "code": StatusCode.PARTICIPATE_IN_ACTIVITY_AGAIN
         })
     relationship = ActivityUserRelationship(
-        task=activity,
+        activity=activity,
         related_user=user,
         permission=1,
         name=activity.title

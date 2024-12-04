@@ -11,8 +11,8 @@ from application.utils.data_process import parse_request
 from application.utils.response import *
 
 
-def _check_user_in_activity(user: User, relationship: ActivityUserRelationship):
-    return relationship is not None
+def _check_user_in_activity(user: User, activity: Activity):
+    return ActivityUserRelationship.objects.filter(related_user=user, activity=activity).exists()
 
 
 def _get_activity_detail(activity: Activity):
@@ -77,11 +77,12 @@ def get_public_activities(request: HttpRequest):
         activity_info_list.append({
             "id": activity.id,
             "name": activity.title,
+            "content": activity.content,
             "start": activity.start_time.strftime('%Y-%m-%d %H:%M'),
             "end": activity.end_time.strftime('%Y-%m-%d %H:%M'),
             # tag是活动自带tag和用户自定义tag的和
             "tags": _get_activity_tag_list(activity, user),
-            "signed-in": _check_user_in_activity(user, activity)
+            "signed_in": _check_user_in_activity(user, activity)
         })
     return response({
         "activities": activity_info_list
