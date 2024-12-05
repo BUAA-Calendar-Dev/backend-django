@@ -177,6 +177,12 @@ def modify_task(request: HttpRequest, id: int):
         return response({
             "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
         })
+        
+    relationship = TaskUserRelationship.objects.filter(related_user=user, task=task).first()
+    if relationship is None:
+        return response({
+            "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
+        })
 
     title = request_data.get('title', '')
     start_time = request_data.get('start', '')
@@ -185,19 +191,21 @@ def modify_task(request: HttpRequest, id: int):
     tags = request_data.get('tags', [])
 
     if title:
-        task.title = title
-    if start_time:
-        task.start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M")
-    if end_time:
-        task.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M")
-    if content:
-        task.content = content
+        relationship.name = title
+    if relationship.permission == 0:
+        if start_time:
+            relationship.task.start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M")
+        if end_time:
+            relationship.task.end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M")
+        if content:
+            relationship.task.content = content
+        relationship.task.save()
     if tags:
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
             if tag is not None:
-                task.tags.add(tag)
-    task.save()
+                relationship.tags.add(tag)
+    relationship.save()
 
     return response({
         "message": "成功修任务信息"

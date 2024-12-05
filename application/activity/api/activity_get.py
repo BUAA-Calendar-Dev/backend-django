@@ -26,6 +26,10 @@ def _get_activity_detail(activity: Activity):
     }
 
 
+def _get_task_tag_list(relationship: TaskUserRelationship):
+    return [tag.id for tag in relationship.task.tags.all()] + [tag.id for tag in relationship.tags.all()]
+
+
 def _get_task_event(relationship: TaskUserRelationship):
     return {
         "id": relationship.task.id,
@@ -34,7 +38,8 @@ def _get_task_event(relationship: TaskUserRelationship):
         "start": relationship.task.start_time.strftime('%Y-%m-%d %H:%M'),
         "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
         "completed": relationship.percentage == 100,
-        "is_task": True
+        "is_task": True,
+        "tags": _get_task_tag_list(relationship)
     }
 
 def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):
@@ -123,8 +128,8 @@ def get_events(request: HttpRequest):
     for relationship in task_relationships:
         task_info_list.append(_get_task_event(relationship))
         
-    # print(f"[debug] activity_info_list is {activity_info_list}")
-    # print(f"[debug] task_info_list is {task_info_list}")
+    print(f"[debug] activity_info_list is {activity_info_list}")
+    print(f"[debug] task_info_list is {task_info_list}")
 
     return response({
         "events": activity_info_list + task_info_list
