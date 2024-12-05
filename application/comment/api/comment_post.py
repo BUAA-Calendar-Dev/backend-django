@@ -4,6 +4,8 @@ from django.views.decorators.http import require_POST
 from application.comment.api.comment_get import _get_comment_info
 from application.comment.models import Comment
 from application.users.api import jwt_auth
+from application.users.models.user import User
+from application.users.models.user_value import AUTH_ADMIN
 from application.utils.data_process import parse_request
 from application.utils.response import *
 
@@ -31,10 +33,10 @@ def create_reply(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def delete_comment(request: HttpRequest, id: int):
-    user = request.user
+    user = User.objects.filter(id=request.user.id).first()
     comment = Comment.objects.filter(id=id).first()
     
-    if comment.author == user:
+    if comment.author == user or user.identity == AUTH_ADMIN:
       comment.delete()
       return response({
           "message": "成功删除评论"

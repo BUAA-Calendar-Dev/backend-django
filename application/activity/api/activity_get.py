@@ -123,8 +123,8 @@ def get_events(request: HttpRequest):
     for relationship in task_relationships:
         task_info_list.append(_get_task_event(relationship))
         
-    print(f"[debug] activity_info_list is {activity_info_list}")
-    print(f"[debug] task_info_list is {task_info_list}")
+    # print(f"[debug] activity_info_list is {activity_info_list}")
+    # print(f"[debug] task_info_list is {task_info_list}")
 
     return response({
         "events": activity_info_list + task_info_list
