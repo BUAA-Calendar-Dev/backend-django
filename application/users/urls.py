@@ -29,4 +29,9 @@ urlpatterns = [
     path('students', get_students),
     # 获取教师列表
     path('teachers', get_teachers),
+    
+    # 获取偏好
+    path('preference', get_preference),
+    # 修改偏好
+    path('preference/update', update_preference),
 ]

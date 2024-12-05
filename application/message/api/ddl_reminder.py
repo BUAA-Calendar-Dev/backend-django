@@ -5,13 +5,13 @@ from application.task.models.task_user_relationship import TaskUserRelationship
 from django.utils import timezone
 from datetime import datetime, timedelta
 
-def has_reminded(task_title: str, user: User) -> bool:
+def has_reminded(title: str, user: User) -> bool:
     """检查是否已经发送过该任务的提醒"""
     # 检查最近24小时内是否发送过相同标题的提醒
-    recent_time = timezone.now() - timedelta(hours=24)
+    recent_time = timezone.now() - timedelta(minutes=user.preference.get("taskReminder", 360))
     return Message.objects.filter(
         receive_user=user,
-        title__contains=task_title,
+        title__contains=title,
         send_time__gte=recent_time
     ).exists()
 
@@ -27,7 +27,7 @@ def ddl_remind(user: User):
     for relationship in task_relationships:
         time_diff = relationship.task.end_time - timezone.now()
         print(f"[debug] task {relationship.task.title} time_diff: {time_diff}")
-        if timedelta(0) <= time_diff <= timedelta(hours=24):
+        if timedelta(0) <= time_diff <= timedelta(minutes=user.preference.get("taskReminder", 360)):
             # 检查是否已经发送过提醒
             if not has_reminded(relationship.task.title, user):
                 title = f"[系统提醒]：{relationship.task.title} 即将截止"
@@ -39,9 +39,9 @@ def ddl_remind(user: User):
     
     activity_relationships = ActivityUserRelationship.objects.filter(related_user=user, permission=1).all()
     for relationship in activity_relationships:
-        time_diff = relationship.activity.end_time - timezone.now()
+        time_diff = relationship.activity.start_time - timezone.now()
         print(f"[debug] activity {relationship.activity.title} time_diff: {time_diff}")
-        if timedelta(0) <= time_diff <= timedelta(hours=24):
+        if timedelta(0) <= time_diff <= timedelta(minutes=user.preference.get("activityReminder", 30)):
             # 检查是否已经发送过提醒
             if not has_reminded(relationship.activity.title, user):
                 title = f"[系统提醒]：{relationship.activity.title} 即将开始"

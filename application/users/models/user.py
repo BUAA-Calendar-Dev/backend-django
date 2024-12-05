@@ -5,6 +5,15 @@ from application.users.models.user_value import *
 
 default_avatar = "https://pigkiller-011955-1319328397.cos.ap-beijing.myqcloud.com/img/202407241830349.avif"
 
+default_preference = {
+    "activityReminder": "30",
+    "taskReminder": "360",
+    "activityColor": "#409EFF",
+    "taskColor": "#F56C6C",
+    "defaultView": "calendar",
+    "theme": "light",
+}
+
 
 class User(AbstractUser):
     id = models.AutoField(primary_key=True, auto_created=True, editable=False)
@@ -27,6 +36,9 @@ class User(AbstractUser):
     phone = models.CharField(max_length=32, default="手机号还未定义", verbose_name="phone")
     # 个性签名
     motto = models.CharField(max_length=256, default='这个人很懒，什么都没有留下', verbose_name='motto')
+
+    # 偏好
+    preference = models.JSONField(default=dict, verbose_name="preference")
 
     groups = models.ManyToManyField(
         'auth.Group',
