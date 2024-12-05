@@ -30,8 +30,8 @@ def creat_task(request: HttpRequest):
     end_time = request_data.get('end', None)
 
     # TODO：目前设置如果没有DDL，则结束和创建时间相等
-    start_time = timezone.now() if start_time is None else start_time
-    end_time = start_time if end_time is None else end_time
+    start_time = timezone.now() if start_time is None else datetime.strptime(start_time, "%Y-%m-%d %H:%M")
+    end_time = start_time if end_time is None else datetime.strptime(end_time, "%Y-%m-%d %H:%M")
 
     parent_task_id = request_data.get('parent_task_id', None)
 
