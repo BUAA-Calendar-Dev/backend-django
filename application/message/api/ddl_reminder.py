@@ -27,7 +27,7 @@ def ddl_remind(user: User):
     for relationship in task_relationships:
         time_diff = relationship.task.end_time - timezone.now()
         print(f"[debug] task {relationship.task.title} time_diff: {time_diff}")
-        if timedelta(0) <= time_diff <= timedelta(minutes=user.preference.get("taskReminder", 360)):
+        if timedelta(0) <= time_diff <= timedelta(minutes=int(user.preference.get("taskReminder", 360))):
             # 检查是否已经发送过提醒
             if not has_reminded(relationship.task.title, user):
                 title = f"[系统提醒]：{relationship.task.title} 即将截止"
@@ -41,7 +41,7 @@ def ddl_remind(user: User):
     for relationship in activity_relationships:
         time_diff = relationship.activity.start_time - timezone.now()
         print(f"[debug] activity {relationship.activity.title} time_diff: {time_diff}")
-        if timedelta(0) <= time_diff <= timedelta(minutes=user.preference.get("activityReminder", 30)):
+        if timedelta(0) <= time_diff <= timedelta(minutes=int(user.preference.get("activityReminder", 30))):
             # 检查是否已经发送过提醒
             if not has_reminded(relationship.activity.title, user):
                 title = f"[系统提醒]：{relationship.activity.title} 即将开始"
