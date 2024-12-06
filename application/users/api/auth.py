@@ -4,6 +4,7 @@ import jwt
 from django.http import HttpRequest
 from django.utils import timezone
 from django.views.decorators.http import require_POST, require_GET
+import pytz
 
 from Calendar import settings
 from ..models import User
@@ -46,7 +47,9 @@ def refresh_token(request):
         if record is None or record.user != user:
             raise jwt.InvalidTokenError
 
-        if record.expires_by < timezone.now():
+        china_tz = pytz.timezone('Asia/Shanghai')
+        now = timezone.localtime(timezone.now(), china_tz)
+        if record.expires_by < now:
             raise jwt.InvalidTokenError
 
         # 生成新的token
@@ -101,7 +104,8 @@ def generate_token(user: User, access_token_delta: int = 1) -> str:
             access_token_delta (int, optional): time to expire. Defaults to 1 (hour).
     """
 
-    current_time = timezone.now()
+    china_tz = pytz.timezone('Asia/Shanghai')
+    current_time = timezone.localtime(timezone.now(), china_tz)
     access_token_payload = {
         "user_id": user.id,
         "exp": current_time + timedelta(hours=access_token_delta),
@@ -120,7 +124,8 @@ def generate_refresh_token(user: User, refresh_token_delta: int = 6 * 24) -> str
         refresh_token_delta (int, optional): time to expire. Defaults to 6 days (7 * 24 hours).
     """
 
-    current_time = timezone.now()
+    china_tz = pytz.timezone('Asia/Shanghai')
+    current_time = timezone.localtime(timezone.now(), china_tz)
 
     # 删除旧的refresh_token
     AuthRecord.objects.filter(user=user).delete()

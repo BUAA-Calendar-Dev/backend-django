@@ -4,3 +4,4 @@ cos-python-sdk-v5
 PyJWT
 psycopg2
 mysqlclient
+pytz

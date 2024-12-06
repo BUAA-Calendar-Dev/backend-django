@@ -47,8 +47,8 @@ def get_related_tasks(request: HttpRequest):
             "alarms": _get_alarms(relationship)
         })
 
-    print(f"[debug]find {len(tasks_list)} tasks")
-    print(f"tasks is {tasks_list}")
+    # print(f"[debug]find {len(tasks_list)} tasks")
+    # print(f"[debug]tasks is {tasks_list}")
 
     return response({
         "tasks": tasks_list,
