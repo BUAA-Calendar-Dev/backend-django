@@ -39,7 +39,8 @@ def _get_task_event(relationship: TaskUserRelationship):
         "end": relationship.task.end_time.strftime('%Y-%m-%d %H:%M'),
         "completed": relationship.percentage == 100,
         "is_task": True,
-        "tags": _get_task_tag_list(relationship)
+        "tags": _get_task_tag_list(relationship),
+        "color": relationship.color if relationship.color != "" else relationship.related_user.preference["taskColor"]
     }
 
 def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):
@@ -53,7 +54,8 @@ def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User
         # tag是活动自带tag和用户自定义tag的和
         "tags": _get_activity_tag_list(relationship.activity, user),
         "signed-in": relationship is not None,
-        "is_task": False
+        "is_task": False,
+        "color": relationship.color if relationship.color != "" else user.preference["activityColor"]
     }
 
 

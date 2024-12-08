@@ -36,6 +36,8 @@ class TaskUserRelationship(models.Model):
     tags = models.ManyToManyField(Tag,
                                   related_name="tasks_have_tag",
                                   blank=True)
+    # 自定义颜色
+    color = models.CharField(max_length=64, default="", verbose_name="color")
 
     def __str__(self):
         return f"[task_rela]{self.name}"

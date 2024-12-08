@@ -5,6 +5,8 @@ from datetime import datetime
 from application.activity.models import Activity
 from application.activity.models.activity_user_relationship import ActivityUserRelationship
 from application.tag.models import Tag
+from application.task.models.task import Task
+from application.task.models.task_user_relationship import TaskUserRelationship
 from application.users.api import jwt_auth
 from application.utils.data_process import parse_request
 from application.utils.response import *
@@ -213,3 +215,33 @@ def create_event(request: HttpRequest):
     return response({
         "message": "成功创建活动",
     })
+
+
+@response_wrapper
+@jwt_auth()
+@require_POST
+def modify_color(request: HttpRequest, id: int):
+    user = request.user
+    request_data = parse_request(request)
+    color = request_data.get('color')
+    is_task = request_data.get('is-task', False)
+    
+    if is_task:
+        task = Task.objects.filter(id=id).first()
+        if task is None:
+            return response({
+                "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
+            })
+        relationship = TaskUserRelationship.objects.filter(task=task, related_user=user).first()
+        relationship.color = color
+        relationship.save()
+    else:
+        activity = Activity.objects.filter(id=id).first()
+        relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
+        relationship.color = color
+        relationship.save()
+
+    return response({
+        "message": "成功修改颜色"
+    })
+

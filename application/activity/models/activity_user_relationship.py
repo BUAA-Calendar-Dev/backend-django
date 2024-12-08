@@ -31,6 +31,8 @@ class ActivityUserRelationship(models.Model):
     tags = models.ManyToManyField(Tag,
                                   related_name="activities_have_tag",
                                   blank=True)
+    # 自定义颜色
+    color = models.CharField(max_length=64, default="", verbose_name="color")
 
     def __str__(self):
         return f"[activity_rela]{self.name}"

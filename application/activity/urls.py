@@ -26,6 +26,8 @@ urlpatterns = [
     path('e', get_events),
     # 创建私人活动
     path('e/create', create_event),
+    # 修改显示颜色
+    path('e/<int:id>/color', modify_color),
     
     # 获取评论
     path('<int:id>/comments', get_comments),
