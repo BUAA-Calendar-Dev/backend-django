@@ -14,6 +14,7 @@ from application.utils.response import *
 @jwt_auth()
 @require_POST
 def send_to_student(request: HttpRequest, id: int):
+    user = request.user
     request_data = parse_request(request)
 
     student = User.objects.filter(id=id).first()
@@ -25,7 +26,7 @@ def send_to_student(request: HttpRequest, id: int):
     title = request_data.get('title', '')
     content = request_data.get('content', '')
 
-    message = Message(title=title, content=content, receive_user=student)
+    message = Message(title=title, content=content, receive_user=student, send_user=user)
     message.save()
     return response({
         "message": "成功向学生发送信息"
@@ -36,6 +37,7 @@ def send_to_student(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def send_to_class(request: HttpRequest, id: int):
+    user = request.user
     request_data = parse_request(request)
 
     _class = Class.objects.filter(id=id).first()
@@ -47,7 +49,7 @@ def send_to_class(request: HttpRequest, id: int):
     title = request_data.get('title', '')
     content = request_data.get('content', '')
     for student in _class.students.all():
-        message = Message(title=title, content=content, receive_user=student)
+        message = Message(title=title, content=content, receive_user=student, send_user=user)
         message.save()
     return response({
         "message": "成功向班级发送信息"
@@ -58,12 +60,13 @@ def send_to_class(request: HttpRequest, id: int):
 @jwt_auth()
 @require_POST
 def send_to_school(request: HttpRequest):
+    user = request.user
     request_data = parse_request(request)
 
     title = request_data.get('title', '')
     content = request_data.get('content', '')
     for student in User.objects.filter(identity=AUTH_STUDENT):
-        message = Message(title=title, content=content, receive_user=student)
+        message = Message(title=title, content=content, receive_user=student, send_user=user)
         message.save()
     return response({
         "message": "成功向全校发送信息"
