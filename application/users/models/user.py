@@ -30,10 +30,9 @@ class User(AbstractUser):
     # 头像
     avatar = models.CharField(default=default_avatar, verbose_name='avatar', max_length=500)
     # 邮箱
-    email = models.EmailField(unique=True, default='邮箱还未定义', error_messages={'unique': '该邮箱已被注册'},
-                              verbose_name='email')
+    email = models.EmailField(default='邮箱还未定义', error_messages={'unique': '该邮箱已被注册'}, verbose_name='email',blank=True)
     # 手机号
-    phone = models.CharField(max_length=32, default="手机号还未定义", verbose_name="phone")
+    phone = models.CharField(max_length=32, default="手机号还未定义", verbose_name="phone", blank=True)
     # 个性签名
     motto = models.CharField(max_length=256, default='这个人很懒，什么都没有留下', verbose_name='motto')
 

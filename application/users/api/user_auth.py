@@ -9,6 +9,7 @@ from application.users.api.email import varify_captcha
 from application.users.models import User
 from application.utils.data_process import parse_request
 from application.utils.response import *
+from application.users.models.user import default_preference
 
 name_not_allow = ['default', 'delete']
 
@@ -139,6 +140,7 @@ def user_register(request: HttpRequest):
         user = User.objects.create_user(username=username, password=password, email=email)
         if phone is not None:
             user.phone = phone
+        user.preference = default_preference
         user.save()
         print("[debug]注册成功")
         return response({

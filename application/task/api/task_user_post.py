@@ -206,6 +206,7 @@ def modify_task(request: HttpRequest, id: int):
             relationship.task.content = content
         relationship.task.save()
     if tags:
+        print(tags)
         relationship.tags.clear()
         for tag_id in tags:
             tag = Tag.objects.filter(id=tag_id).first()
