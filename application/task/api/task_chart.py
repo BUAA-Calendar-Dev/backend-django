@@ -35,7 +35,7 @@ def get_task_count(request: HttpRequest):
 
 
 def _get_student_completion_info(user: User, task: Task):
-    relation = TaskUserRelationship.objects.filter(user=user, task=task).first()
+    relation = TaskUserRelationship.objects.filter(related_user=user, task=task).first()
     finished_count, in_progress_count, overdue_count, not_started_count = 0, 0, 0, 0
 
     # 获取中国时区
@@ -88,7 +88,7 @@ def get_task_stu_completion(request: HttpRequest):
     user = request.user
     finished_count, in_progress_count, overdue_count, not_started_count = 0, 0, 0, 0
 
-    relations = TaskUserRelationship.objects.filter(user=user)
+    relations = TaskUserRelationship.objects.filter(related_user=user)
     for relation in relations:
         task = relation.task
         stu_finished_count, stu_in_progress_count, stu_overdue_count, stu_not_started_count = _get_student_completion_info(
