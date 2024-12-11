@@ -92,6 +92,7 @@ def get_public_activities(request: HttpRequest):
             "tags": _get_activity_tag_list(activity, user),
             "signed_in": _check_user_in_activity(user, activity)
         })
+    activity_info_list.sort(key=lambda x: x["start"], reverse=True)
     return response({
         "activities": activity_info_list
     })

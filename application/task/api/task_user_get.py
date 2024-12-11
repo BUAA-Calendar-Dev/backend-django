@@ -1,5 +1,8 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.http import HttpRequest
 from django.views.decorators.http import require_GET
+import pytz
 
 from application.task.models import Task, TaskUserRelationship
 from application.users.api import jwt_auth
@@ -30,7 +33,11 @@ def _get_alarms(relationship: TaskUserRelationship):
 def get_related_tasks(request: HttpRequest):
     user = request.user
     # 获取关系并按任务结束时间倒序排序
-    task_user_relationships = list(TaskUserRelationship.objects.filter(related_user=user).order_by('-task__end_time'))
+    china_tz = pytz.timezone('Asia/Shanghai')
+    now = timezone.localtime(timezone.now(), china_tz) + timedelta(hours=8)
+    
+    task_user_relationships = list(TaskUserRelationship.objects.filter(related_user=user))
+    task_user_relationships.sort(key=lambda r: (r.percentage == 100, abs((r.task.end_time - now).total_seconds())))
     print(f"[debug]find {len(task_user_relationships)} relas")
 
     tasks_list = []
