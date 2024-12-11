@@ -22,14 +22,14 @@ def get_task_count(request: HttpRequest):
 
     count = 0
     finished = 0
-    relations = TaskUserRelationship.objects.filter(user=user)
+    relations = TaskUserRelationship.objects.all()
     for relation in relations:
         if relation.percentage == 100:
             finished += 1
         count += 1
 
     return response({
-        "task": count,
+        "total": count,
         "done": finished
     })
 
