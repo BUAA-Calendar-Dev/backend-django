@@ -108,18 +108,18 @@ def get_task_stu_completion(request: HttpRequest):
 @require_GET
 def get_class_completion(request: HttpRequest, class_id: int):
     user = request.user
-    classes = Class.objects.filter(id=class_id).first()
+    _class = Class.objects.filter(id=class_id).first()
 
     finished_count, in_progress_count, overdue_count, not_started_count = 0, 0, 0, 0
-    for _class in classes:
-        for task in _class.tasks.all():
-            for student in _class.students.all():
-                stu_finished_count, stu_in_progress_count, stu_overdue_count, stu_not_started_count = _get_student_completion_info(
-                    student, task)
-                finished_count += stu_finished_count
-                in_progress_count += stu_in_progress_count
-                overdue_count += stu_overdue_count
-                not_started_count += stu_not_started_count
+    
+    for task in _class.tasks.all():
+        for student in _class.students.all():
+            stu_finished_count, stu_in_progress_count, stu_overdue_count, stu_not_started_count = _get_student_completion_info(
+                student, task)
+            finished_count += stu_finished_count
+            in_progress_count += stu_in_progress_count
+            overdue_count += stu_overdue_count
+            not_started_count += stu_not_started_count
     return response({
         "completionRate": [finished_count, in_progress_count, overdue_count, not_started_count]
     })
@@ -139,7 +139,6 @@ def get_task_completion_7days(request: HttpRequest):
 
     relations = TaskUserRelationship.objects.all()
     for relation in relations:
-        task = relation.task
         user = relation.related_user
         if user.identity != AUTH_STUDENT:
             continue
