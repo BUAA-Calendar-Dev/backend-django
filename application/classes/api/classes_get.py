@@ -102,8 +102,8 @@ def get_class_info_list(request: HttpRequest):
     for _class in classes:
         class_info_list.append(_get_class_info(_class))
 
-    print(f"[debug] find {len(class_info_list)} class info"
-          f"info is: {class_info_list}")
+    #print(f"[debug] find {len(class_info_list)} class info"
+          #f"info is: {class_info_list}")
 
     return response({
         "class": class_info_list

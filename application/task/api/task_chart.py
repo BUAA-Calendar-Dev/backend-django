@@ -134,27 +134,36 @@ def get_task_completion_7days(request: HttpRequest):
     # 获取中国时区
     china_tz = pytz.timezone('Asia/Shanghai')
     now = timezone.localtime(timezone.now(), china_tz) + timedelta(hours=8)
-    # 获取7天前的时间
-    seven_days_ago = now - timedelta(days=7)
 
-    finished_count, in_progress_count, overdue_count, not_started_count = 0, 0, 0, 0
+    day_6, day_5, day_4, day_3, day_2, day_1, day_0 = 0, 0, 0, 0, 0, 0, 0
 
     relations = TaskUserRelationship.objects.all()
     for relation in relations:
         task = relation.task
-        # 检查任务是否在最近7天内
-        if task.start_time < seven_days_ago:
-            continue
         user = relation.related_user
         if user.identity != AUTH_STUDENT:
             continue
 
-        stu_finished_count, stu_in_progress_count, stu_overdue_count, stu_not_started_count = _get_student_completion_info(
-            user, task)
-        finished_count += stu_finished_count
-        in_progress_count += stu_in_progress_count
-        overdue_count += stu_overdue_count
-        not_started_count += stu_not_started_count
+        finish_time = relation.finish_time
+        if finish_time is None:
+            continue
+
+        finish_time = finish_time.date()
+        if finish_time == now.date() - timedelta(days=6):
+            day_6 += 1
+        elif finish_time == now.date() - timedelta(days=5):
+            day_5 += 1
+        elif finish_time == now.date() - timedelta(days=4):
+            day_4 += 1
+        elif finish_time == now.date() - timedelta(days=3):
+            day_3 += 1
+        elif finish_time == now.date() - timedelta(days=2):
+            day_2 += 1
+        elif finish_time == now.date() - timedelta(days=1):
+            day_1 += 1
+        else:
+            day_0 += 1
+
     return response({
-        "completionRate": [finished_count, in_progress_count, overdue_count, not_started_count]
+        "completionRate": [day_6, day_5, day_4, day_3, day_2, day_1, day_0]
     })

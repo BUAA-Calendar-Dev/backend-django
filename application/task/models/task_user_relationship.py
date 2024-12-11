@@ -38,6 +38,8 @@ class TaskUserRelationship(models.Model):
                                   blank=True)
     # 自定义颜色
     color = models.CharField(max_length=64, default="", verbose_name="color")
+    # 完成日期
+    finish_time = models.DateTimeField(verbose_name="finish_time", blank=True, null=True)
 
     def __str__(self):
         return f"[task_rela]{self.name}"

@@ -104,6 +104,10 @@ def set_percentage(request: HttpRequest, id: int):
     relationship.percentage = percentage
     if percentage == 100:
         relationship.is_finished = True
+        relationship.finish_time = timezone.now()
+    else:
+        relationship.is_finished = False
+        relationship.finish_time = None
     relationship.save()
 
     return response({
@@ -132,6 +136,7 @@ def finish_task(request: HttpRequest, id: int):
 
     relationship.percentage = 100
     relationship.is_finished = True
+    relationship.finish_time = timezone.now()
     relationship.save()
 
     return response({
