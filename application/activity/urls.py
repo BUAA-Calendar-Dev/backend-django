@@ -33,4 +33,7 @@ urlpatterns = [
     path('<int:id>/comments', get_comments),
     # 创建一级评论
     path('<int:id>/comment', create_comment),
+    
+    # 参与情况
+    path('joining', get_activity_join_info),
 ]

@@ -34,7 +34,7 @@ def get_messages(request: HttpRequest):
             "unread": False if message.is_read else True
         })
 
-    print(f"[debug]messages: {messages}")
+    # print(f"[debug] messages: {messages}")
     return response({
         "messages": messages,
         "messages_num": len(messages)

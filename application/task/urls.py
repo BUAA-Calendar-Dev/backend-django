@@ -24,4 +24,15 @@ urlpatterns = [
     path('<int:id>/class', assign_to_class),
     # 向全校布置任务
     path('<int:id>/school', assign_to_school),
+    
+    # 获取任务数量
+    path('count', get_task_count),
+    # 各类完成情况：库中的所有任务
+    path('completion', get_task_all_completion),
+    # 个人的完成情况
+    path('self/completion', get_task_stu_completion),
+    # 班级的完成情况
+    path('class/<int:class_id>/completion', get_class_completion),
+    # 近7天的任务完成率
+    path('completion/7days', get_task_completion_7days),
 ]

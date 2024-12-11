@@ -43,6 +43,7 @@ def _get_task_event(relationship: TaskUserRelationship):
         "color": relationship.color if relationship.color != "" else relationship.related_user.preference["taskColor"]
     }
 
+
 def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User):
     return {
         "id": relationship.activity.id,
@@ -125,14 +126,37 @@ def get_events(request: HttpRequest):
     activity_relationships = ActivityUserRelationship.objects.filter(related_user=user)
     for relationship in activity_relationships:
         activity_info_list.append(_get_activity_user_detail(relationship, user))
-        
+
     task_relationships = TaskUserRelationship.objects.filter(related_user=user)
     for relationship in task_relationships:
         task_info_list.append(_get_task_event(relationship))
-        
+
     # print(f"[debug] activity_info_list is {activity_info_list}")
     # print(f"[debug] task_info_list is {task_info_list}")
 
     return response({
         "events": activity_info_list + task_info_list
+    })
+
+
+@response_wrapper
+@jwt_auth()
+@require_GET
+def get_activity_join_info(request: HttpRequest):
+    activity_set = set()
+    num_dict = {}
+    activity_relationships = ActivityUserRelationship.objects.all()
+    for relationship in activity_relationships:
+        activity_set.add(relationship.activity.title)
+        num_dict[relationship.activity.title] = num_dict.get(relationship.activity.title, 0) + 1
+
+    activities = []
+    join_nun = []
+    for activity in activity_set:
+        activities.append(activity)
+        join_nun.append(num_dict[activity])
+
+    return response({
+        "activity": activities,
+        "join": join_nun
     })
