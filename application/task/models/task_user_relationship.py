@@ -37,12 +37,12 @@ class TaskUserRelationship(models.Model):
                                   related_name="tasks_have_tag",
                                   blank=True)
     # 自定义颜色
-    color = models.CharField(max_length=64, default="", verbose_name="color")
+    color = models.CharField(max_length=64, default="", verbose_name="color", blank=True)
     # 完成日期
     finish_time = models.DateTimeField(verbose_name="finish_time", blank=True, null=True)
 
     def __str__(self):
-        return f"[task_rela]{self.name}"
+        return f"[task_rela]{self.name, self.related_user.username}"
 
     class Meta:
         db_table = 'task_user_relationship'

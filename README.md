@@ -2,8 +2,6 @@
 
 继“今天在北航吃什么”后，隆重推出：“今天在北航做什么”！
 
-
-
 # 前后端对接
 
 ## 进度管理
@@ -107,7 +105,9 @@ python manage.py runserver
 
 # 项目结构
 
-![structure](./docs/structure.drawio.png)
+以ER图为例：
+
+![ER](./docs/ER.drawio.png)
 
 ## 实体
 

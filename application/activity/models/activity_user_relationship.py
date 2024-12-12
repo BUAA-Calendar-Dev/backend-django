@@ -35,7 +35,7 @@ class ActivityUserRelationship(models.Model):
     color = models.CharField(max_length=64, default="", verbose_name="color")
 
     def __str__(self):
-        return f"[activity_rela]{self.name}"
+        return f"[activity_rela]{self.name, self.related_user.username}"
 
     class Meta:
         db_table = 'activity_user_relationship'
