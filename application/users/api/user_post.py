@@ -52,6 +52,8 @@ def impower_user(request: HttpRequest):
     user_id = request_data.get('userid')
 
     user = User.objects.filter(id=user_id).first()
+    if user is None:
+        return fail_response(ErrorCode.INVALID_REQUEST_ARGUMENT_ERROR, "用户不存在")
     user.identity = AUTH_TEACHER
     user.save()
 

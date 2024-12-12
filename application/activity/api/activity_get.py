@@ -63,6 +63,8 @@ def _get_activity_user_detail(relationship: ActivityUserRelationship, user: User
 def _get_activity_tag_list(activity: Activity, user: User):
     tag_list = set()
     relationship = ActivityUserRelationship.objects.filter(related_user=user, activity=activity).first()
+    if relationship is None:
+        return []
 
     # 添加活动的标签
     tag_list.update(activity.tags.all())

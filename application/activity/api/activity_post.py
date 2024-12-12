@@ -131,7 +131,8 @@ def user_exit_activity(request: HttpRequest, id: int):
             "code": StatusCode.EXIT_ACTIVITY_NOT_IN
         })
     relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
-    relationship.delete()
+    if relationship:
+          relationship.delete()
     
     return response({
         "message": f"成功退出活动"
@@ -155,8 +156,9 @@ def add_tag(request: HttpRequest, id: int):
     tag_id = request_data.get('tag-id')
     tag = Tag.objects.filter(id=tag_id).first()
 
-    relationship.tags.add(tag)
-    relationship.save()
+    if relationship and tag:
+        relationship.tags.add(tag)
+        relationship.save()
 
     return response({
         "message": "成功添加tag"
@@ -180,8 +182,9 @@ def remove_tag(request: HttpRequest, id: int):
     tag_id = request_data.get('tag-id')
     tag = Tag.objects.filter(id=tag_id).first()
 
-    relationship.tags.remove(tag)
-    relationship.save()
+    if tag and relationship:
+        relationship.tags.remove(tag)
+        relationship.save()
 
     return response({
         "message": "成功移除tag"
@@ -233,13 +236,15 @@ def modify_color(request: HttpRequest, id: int):
                 "code": StatusCode.REQUEST_TASK_ID_NOT_EXIST
             })
         relationship = TaskUserRelationship.objects.filter(task=task, related_user=user).first()
-        relationship.color = color
-        relationship.save()
+        if relationship:
+            relationship.color = color
+            relationship.save()
     else:
         activity = Activity.objects.filter(id=id).first()
         relationship = ActivityUserRelationship.objects.filter(activity=activity, related_user=user).first()
-        relationship.color = color
-        relationship.save()
+        if relationship:
+            relationship.color = color
+            relationship.save()
 
     return response({
         "message": "成功修改颜色"
